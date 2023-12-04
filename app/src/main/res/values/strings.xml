@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Twaddle</string>
+    <string name="title_activity_register_step_two">RegisterActivityStepTwo</string>
+</resources>
