@@ -46,6 +46,7 @@
         android:layout_width="360sp"
         android:layout_height="wrap_content"
         android:background="@drawable/infobox_background"
+        android:fontFamily="@font/outfit_light"
         android:text="Please log in to your account,\nor create a new one!"
         android:textAlignment="center"
         android:textColor="@color/text_d"
@@ -109,7 +110,7 @@
         android:orientation="vertical"
         android:textColor="@color/text_l"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+        app:layout_constraintBottom_toTopOf="@+id/layo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
@@ -121,6 +122,7 @@
             android:fontFamily="@font/outfit_bold"
             android:text="ErrorPlaceholder"
             android:textColor="@color/text_d" />
+
         <TextView
             android:id="@+id/tv_errDesc"
             android:layout_width="360sp"
@@ -134,76 +136,74 @@
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="360sp"
-        android:layout_height="wrap_content"
+        android:layout_height="80sp"
         android:gravity="center"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintVertical_bias="0.75">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_login"
+            style="@style/Button.Primary"
+            android:layout_width="170sp"
+            android:layout_height="70sp"
+            android:fontFamily="@font/outfit_light"
+            android:text="Login"
+            android:textColor="@color/text_d"
+            android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="170sp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="For existing accounts"
-                android:textAlignment="center"
-                android:textColor="@color/text_d" />
-
-            <Space
-                android:layout_width="20sp"
-                android:layout_height="match_parent"
-                android:layout_weight="1" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="170sp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="For new accounts"
-                android:textAlignment="center"
-                android:textColor="@color/text_d" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="360sp"
+        <Space
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:layout_weight="1" />
 
-            <Button
-                android:id="@+id/btn_login"
-                android:layout_width="170sp"
-                android:layout_height="80sp"
-                android:backgroundTint="@color/primary_d"
-                android:fontFamily="@font/outfit_light"
-                android:text="Login"
-                android:textColor="@color/text_d"
-                android:textSize="24sp" />
+        <Button
+            android:id="@+id/btn_gotoRegister"
+            style="@style/Button.Secondary"
+            android:layout_width="170sp"
+            android:layout_height="70sp"
+            android:fontFamily="@font/outfit_light"
+            android:text="Register"
+            android:textColor="@color/text_d"
+            android:textSize="24sp" />
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
+    </LinearLayout>
 
-            <Button
-                android:id="@+id/btn_register"
-                android:layout_width="170sp"
-                android:layout_height="80sp"
-                android:backgroundTint="@color/secondary_d"
-                android:fontFamily="@font/outfit_light"
-                android:text="Register"
-                android:textColor="@color/text_d"
-                android:textSize="24sp"/>
+    <LinearLayout
+        android:id="@+id/layo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-        </LinearLayout>
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="170sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="For existing accounts"
+            android:textAlignment="center"
+            android:textColor="@color/text_d" />
+
+        <Space
+            android:layout_width="20sp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="170sp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="For new accounts"
+            android:textAlignment="center"
+            android:textColor="@color/text_d" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

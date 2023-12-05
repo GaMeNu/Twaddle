@@ -2,6 +2,7 @@ package me.gm.twaddle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -40,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         errorBoxes = findViewById(R.id.layout_errBoxes);
 
         btnLogin = findViewById(R.id.btn_login);
-        btnRegister = findViewById(R.id.btn_register);
+        btnRegister = findViewById(R.id.btn_gotoRegister);
 
         btnLogin.setOnClickListener(this::onClick_login);
         btnRegister.setOnClickListener(this::onClick_register);
@@ -72,25 +73,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void onClick_register(View view){
-        newUser(etEmail.getText().toString(), etPassword.getText().toString());
+        Intent intent = new Intent(this, RegisterStepTwoActivity.class);
+        intent.putExtra("userEmail", etEmail.getText().toString())
+                .putExtra("userPassword", etPassword.getText().toString());
+        startActivity(intent);
     }
 
-    public void newUser(String email, String password){
-        resetError();
-        if (email.isEmpty() || password.isEmpty()){
-            setError("Error:", "Email and Password fields cannot be empty.");
-            return;
-        }
-        mAuth.createUserWithEmailAndPassword(email, password).addOnFailureListener(this::newUser_failure).addOnSuccessListener(this:: newUser_success);
-    }
-
-    private void newUser_success(AuthResult authResult) {
-        resetError();
-    }
-
-    private void newUser_failure(Exception e) {
-        setError("Error while creating user:", e.getMessage());
-    }
 
     public void loginUser(String email, String password){
         resetError();

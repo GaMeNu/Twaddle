@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_d"
     tools:context=".RegisterStepTwoActivity">
 
     <LinearLayout
@@ -39,6 +40,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linearLayout6"
         android:layout_width="360sp"
         android:layout_height="wrap_content"
         android:background="@drawable/infobox_background"
@@ -52,7 +54,10 @@
             android:id="@+id/textView7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/outfit_light"
             android:text="Please confirm your details:"
+            android:textAlignment="center"
+            android:textColor="@color/text_d"
             android:textSize="25sp" />
     </LinearLayout>
 
@@ -67,15 +72,16 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:id="@+id/etEmail"
+            android:id="@+id/et_emailRegister"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60sp"
             android:background="@drawable/et_background"
             android:drawableStart="@drawable/email_outline"
             android:ems="10"
             android:fontFamily="@font/outfit_light"
             android:hint="Email"
             android:inputType="text"
+            android:textColor="@color/primary_var_d"
             android:textColorHint="@color/text_secondary_d"
             android:textSize="24sp" />
 
@@ -84,15 +90,16 @@
             android:layout_height="10sp" />
 
         <EditText
-            android:id="@+id/etPassword"
+            android:id="@+id/et_passwordRegister"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60sp"
             android:background="@drawable/et_background"
             android:drawableStart="@drawable/password_outline"
             android:ems="10"
             android:fontFamily="@font/outfit_light"
             android:hint="Password"
             android:inputType="textPassword"
+            android:textColor="@color/primary_var_d"
             android:textColorHint="@color/text_secondary_d"
             android:textSize="24sp" />
 
@@ -101,16 +108,90 @@
             android:layout_height="10sp" />
 
         <EditText
-            android:id="@+id/etPasswordConfirm"
+            android:id="@+id/et_passwordRegisterConfirm"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60sp"
             android:background="@drawable/et_background"
             android:drawableStart="@drawable/password_outline"
             android:ems="10"
             android:fontFamily="@font/outfit_light"
             android:hint="Confirm password"
             android:inputType="textPassword"
+            android:textColor="@color/primary_var_d"
             android:textColorHint="@color/text_secondary_d"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_errBoxesRegister"
+        android:layout_width="360sp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tv_error_background"
+        android:fontFamily="@font/outfit_bold"
+        android:orientation="vertical"
+        android:textColor="@color/text_l"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
+
+        <TextView
+            android:id="@+id/tv_errTitleRegister"
+            android:layout_width="360sp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/outfit_bold"
+            android:text="ErrorPlaceholder"
+            android:textColor="@color/text_d" />
+
+        <TextView
+            android:id="@+id/tv_errDescRegister"
+            android:layout_width="360sp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/outfit_light"
+            android:text="Error Description Placeholder"
+            android:textColor="@color/text_d" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout8"
+        android:layout_width="360sp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+        app:layout_constraintVertical_bias="0.75">
+
+        <Button
+            android:id="@+id/btn_backRegister"
+            style="@style/Button.Tertiary"
+            android:layout_width="170sp"
+            android:layout_height="60sp"
+            android:background="@drawable/button_background"
+            android:backgroundTint="@color/background_d"
+            android:backgroundTintMode="add"
+            android:fontFamily="@font/outfit_light"
+            android:text="Back"
+            android:textColor="@color/text_d"
+            android:textSize="24sp"
+            android:theme="@style/Button.Tertiary" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/btn_register"
+            style="@style/Button.Primary"
+            android:layout_width="170sp"
+            android:layout_height="60sp"
+            android:background="@drawable/button_background"
+            android:text="Register"
+            android:textColor="@color/text_d"
             android:textSize="24sp" />
     </LinearLayout>
 
