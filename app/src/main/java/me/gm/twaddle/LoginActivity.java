@@ -48,6 +48,12 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        resetError();
+    }
+
     public String getEmail() {
         return etEmail.getText().toString();
     }
@@ -94,6 +100,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginUser_success(AuthResult authResult) {
+
+        setError("Logged in successfully", "Using ErrorBox because lazy again.");
 
     }
 
