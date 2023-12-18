@@ -38,8 +38,8 @@ public class RegisterStepTwoActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btn_backRegister);
         btnRegister = findViewById(R.id.btn_register);
 
-        errorTitle = findViewById(R.id.tv_errTitleRegister);
-        errorDescription = findViewById(R.id.tv_errDescRegister);
+        errorTitle = findViewById(R.id.tv_errTitle_register);
+        errorDescription = findViewById(R.id.tv_errDesc_register);
         errorBoxes = findViewById(R.id.layout_errBoxesRegister);
 
         btnBack.setOnClickListener(this::onClick_back);

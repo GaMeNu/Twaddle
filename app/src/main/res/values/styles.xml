@@ -30,4 +30,14 @@
         <item name="android:textColor">@color/text_d</item>
         <item name="fontFamily">@font/outfit_light</item>
     </style>
+    
+    <style name="EditText.Input" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/et_background</item>
+        <item name="android:colorBackground">@color/background_d</item>
+        <item name="android:layout_height">60sp</item>
+        <item name="android:textColorHint">@color/text_secondary_d</item>
+        <item name="hintTextColor">@color/text_secondary_d</item>
+        <item name="android:textColor">@color/text_d</item>
+        <item name="android:textSize">24sp</item>
+    </style>
 </resources>

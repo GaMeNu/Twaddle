@@ -72,33 +72,44 @@
             android:layout_height="60sp"
             android:background="@drawable/et_background"
             android:drawableStart="@drawable/email_outline"
+            android:drawablePadding="5sp"
             android:ems="10"
             android:fontFamily="@font/outfit_light"
             android:hint="Email"
             android:inputType="textEmailAddress"
-            android:textColor="@color/primary_d"
+            android:padding="10sp"
+            android:textColor="@color/text_d"
             android:textColorHint="@color/text_secondary_d"
-            android:textSize="24sp"
-            android:padding="10sp"/>
+            android:textSize="24sp" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_height="10sp" />
 
-        <EditText
-            android:padding="10sp"
-            android:id="@+id/et_password"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="60sp"
-            android:background="@drawable/et_background"
-            android:drawableStart="@drawable/password_outline"
-            android:ems="10"
-            android:fontFamily="@font/outfit_light"
             android:hint="Password"
-            android:inputType="textPassword"
-            android:textColor="@color/primary_d"
             android:textColorHint="@color/text_secondary_d"
-            android:textSize="24sp" />
+            app:endIconMode="password_toggle"
+            app:endIconTint="@color/text_d"
+            app:passwordToggleContentDescription="Show password"
+            app:passwordToggleDrawable="@drawable/pass_visibillity_off"
+            app:passwordToggleEnabled="false"
+            app:passwordToggleTint="@color/text_d"
+            app:startIconDrawable="@drawable/password_outline"
+            app:startIconTint="@color/text_d">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_password"
+                style="@style/EditText.Input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/outfit_light"
+                android:inputType="textEmailAddress"
+                android:password="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -116,7 +127,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
         <TextView
-            android:id="@+id/tv_errTitle"
+            android:id="@+id/tv_errTitle_login"
             android:layout_width="360sp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/outfit_bold"
@@ -124,7 +135,7 @@
             android:textColor="@color/text_d" />
 
         <TextView
-            android:id="@+id/tv_errDesc"
+            android:id="@+id/tv_errDesc_login"
             android:layout_width="360sp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/outfit_light"
@@ -143,11 +154,11 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/textView2"
             android:layout_width="170sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="For existing accounts"
+            android:text="For new accounts"
             android:textAlignment="center"
             android:textColor="@color/text_d" />
 
@@ -157,11 +168,11 @@
             android:layout_weight="1" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/textView"
             android:layout_width="170sp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="For new accounts"
+            android:text="For existing accounts"
             android:textAlignment="center"
             android:textColor="@color/text_d" />
 
@@ -180,12 +191,12 @@
         app:layout_constraintVertical_bias="0.75">
 
         <Button
-            android:id="@+id/btn_login"
-            style="@style/Button.Primary"
+            android:id="@+id/btn_gotoRegister"
+            style="@style/Button.Secondary"
             android:layout_width="170sp"
             android:layout_height="60sp"
             android:fontFamily="@font/outfit_light"
-            android:text="Login"
+            android:text="Register"
             android:textColor="@color/text_d"
             android:textSize="24sp" />
 
@@ -195,12 +206,12 @@
             android:layout_weight="1" />
 
         <Button
-            android:id="@+id/btn_gotoRegister"
-            style="@style/Button.Secondary"
+            android:id="@+id/btn_login"
+            style="@style/Button.Primary"
             android:layout_width="170sp"
             android:layout_height="60sp"
             android:fontFamily="@font/outfit_light"
-            android:text="Register"
+            android:text="Login"
             android:textColor="@color/text_d"
             android:textSize="24sp" />
 

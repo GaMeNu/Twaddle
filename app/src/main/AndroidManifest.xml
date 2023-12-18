@@ -13,12 +13,23 @@
         android:theme="@style/Theme.Twaddle"
         tools:targetApi="31">
         <activity
-            android:name=".RegisterStepTwoActivity"
+            android:name=".HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterActivityStepTwo"
+            android:name=".RegisterStepThreeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LauncherActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".RegisterStepTwoActivity"
             android:exported="false"
-            android:label="@string/title_activity_register_step_two"
             android:theme="@style/Theme.Twaddle" />
         <activity
             android:name=".MainActivity"

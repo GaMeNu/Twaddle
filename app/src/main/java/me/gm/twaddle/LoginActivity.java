@@ -36,8 +36,8 @@ public class LoginActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.et_email);
         etPassword = findViewById(R.id.et_password);
 
-        errorTitle = findViewById(R.id.tv_errTitle);
-        errorDescription = findViewById(R.id.tv_errDesc);
+        errorTitle = findViewById(R.id.tv_errTitle_login);
+        errorDescription = findViewById(R.id.tv_errDesc_login);
         errorBoxes = findViewById(R.id.layout_errBoxes);
 
         btnLogin = findViewById(R.id.btn_login);

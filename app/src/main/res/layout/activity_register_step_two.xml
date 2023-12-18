@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/outfit_light"
-            android:text="Please confirm your details:"
+            android:text="Please complete and confirm your registration details:"
             android:textAlignment="center"
             android:textColor="@color/text_d"
             android:textSize="25sp" />
@@ -137,7 +137,7 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
         <TextView
-            android:id="@+id/tv_errTitleRegister"
+            android:id="@+id/tv_errTitle_register"
             android:layout_width="360sp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/outfit_bold"
@@ -145,7 +145,7 @@
             android:textColor="@color/text_d" />
 
         <TextView
-            android:id="@+id/tv_errDescRegister"
+            android:id="@+id/tv_errDesc_register"
             android:layout_width="360sp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/outfit_light"
