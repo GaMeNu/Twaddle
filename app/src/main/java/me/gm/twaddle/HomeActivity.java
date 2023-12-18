@@ -10,14 +10,10 @@ import android.os.Bundle;
 
 public class HomeActivity extends AppCompatActivity {
 
-    Context ctx;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        ctx = this.getApplicationContext();
 
         OnBackPressedCallback backPressedCallback = new OnBackPressedCallback(true) {
             @Override
