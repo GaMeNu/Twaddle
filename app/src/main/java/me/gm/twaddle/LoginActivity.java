@@ -102,7 +102,8 @@ public class LoginActivity extends AppCompatActivity {
     private void loginUser_success(AuthResult authResult) {
 
         setError("Logged in successfully", "Using ErrorBox because lazy again.");
-
+        startActivity(new Intent(this, HomeActivity.class));
+        finish();
     }
 
 
