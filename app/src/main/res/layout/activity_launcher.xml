@@ -7,4 +7,46 @@
     android:background="@color/background_d"
     tools:context=".LauncherActivity">
 
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/outfit_bold"
+        android:text="Twaddle"
+        android:textColor="@color/primary_var_d"
+        android:textSize="60sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5sp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="5sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/contains_technical_debt" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="266dp"
+            android:layout_height="54dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/works_on_my_machine"
+            tools:layout_editor_absoluteX="77dp"
+            tools:layout_editor_absoluteY="540dp" />
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,10 +1,15 @@
 package me.gm.twaddle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -25,6 +30,16 @@ public class RegisterStepTwoActivity extends AppCompatActivity {
     private TextView errorDescription;
     private LinearLayout errorBoxes;
     private FirebaseAuth mAuth;
+    private CheckBox rememberCreds;
+
+    private String email;
+    private String password;
+    private boolean remember;
+
+    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            this::onActivityResult
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +57,8 @@ public class RegisterStepTwoActivity extends AppCompatActivity {
         errorDescription = findViewById(R.id.tv_errDesc_register);
         errorBoxes = findViewById(R.id.layout_errBoxesRegister);
 
+        rememberCreds = findViewById(R.id.cb_rememberCredentials_register);
+
         btnBack.setOnClickListener(this::onClick_back);
         btnRegister.setOnClickListener(this::onClick_register);
 
@@ -49,6 +66,7 @@ public class RegisterStepTwoActivity extends AppCompatActivity {
 
         etEmail.setText(getIntent().getStringExtra("userEmail"));
         etPassword.setText(getIntent().getStringExtra("userPassword"));
+        rememberCreds.setChecked(getIntent().getBooleanExtra("userRemember", false));
 
 
     }
@@ -86,6 +104,9 @@ public class RegisterStepTwoActivity extends AppCompatActivity {
     public void registerUser(String email, String password){
         resetError();
 
+        this.email = email;
+        this.password = password;
+
         mAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(this::registerUser_success).addOnFailureListener(this::registerUser_failure);
     }
 
@@ -95,6 +116,27 @@ public class RegisterStepTwoActivity extends AppCompatActivity {
 
     private void registerUser_success(AuthResult authResult) {
         setError("Registered successfully", "I'm using the error box because lazy.");
+
+
+        Intent usernameIntent = new Intent(RegisterStepTwoActivity.this, RegisterStepThreeActivity.class);
+
+        usernameIntent.putExtra("email", this.email);
+
+        activityResultLauncher.launch(usernameIntent);
+
+        finish();
+    }
+
+    private void onActivityResult(ActivityResult result){
+        if (result.getResultCode() == RESULT_OK){
+            Intent resultData = new Intent()
+            .putExtra("email", this.email)
+            .putExtra("password", this.password)
+            .putExtra("remember", this.rememberCreds.isChecked());
+
+            setResult(RESULT_OK, resultData);
+            finish();
+        }
     }
 
     public void setError(CharSequence title, CharSequence description){

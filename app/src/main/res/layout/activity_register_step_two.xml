@@ -122,6 +122,18 @@
             android:textSize="24sp" />
     </LinearLayout>
 
+    <CheckBox
+        android:id="@+id/cb_rememberCredentials_register"
+        android:layout_width="360sp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/outfit_light"
+        android:padding="5sp"
+        android:text="Remember credentials?"
+        android:textColor="@color/text_d"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+
     <LinearLayout
         android:id="@+id/layout_errBoxesRegister"
         android:layout_width="360sp"

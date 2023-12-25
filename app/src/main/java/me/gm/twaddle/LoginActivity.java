@@ -1,11 +1,17 @@
 package me.gm.twaddle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,9 +28,16 @@ public class LoginActivity extends AppCompatActivity {
     Button btnLogin;
     Button btnRegister;
 
+    CheckBox rememberCreds;
+
     LinearLayout errorBoxes;
 
     FirebaseAuth mAuth;
+
+    String email;
+    String password;
+
+    boolean remember;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +56,20 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btn_login);
         btnRegister = findViewById(R.id.btn_gotoRegister);
 
+        rememberCreds = findViewById(R.id.cb_rememberCredentials_register);
+
         btnLogin.setOnClickListener(this::onClick_login);
         btnRegister.setOnClickListener(this::onClick_register);
+
+        if (getIntent().getExtras() != null && getIntent().getExtras().getBoolean("startForLogin", false)) {
+            try {
+                loginUser(getIntent().getExtras().getString("email"), getIntent().getExtras().getString("password"));
+            } catch (NullPointerException e){
+                setError("Missing auth credentials", "Activity started for login but no auth credentials were given");
+            } catch (Exception e){
+                setError("Error:", "Failed to login using external credentials");
+            }
+        }
 
     }
 
@@ -75,14 +100,16 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void onClick_login(View view){
+        remember = rememberCreds.isChecked();
         loginUser(etEmail.getText().toString(), etPassword.getText().toString());
     }
 
     private void onClick_register(View view){
         Intent intent = new Intent(this, RegisterStepTwoActivity.class);
         intent.putExtra("userEmail", etEmail.getText().toString())
-                .putExtra("userPassword", etPassword.getText().toString());
-        startActivity(intent);
+                .putExtra("userPassword", etPassword.getText().toString())
+                .putExtra("userRemember", rememberCreds.isChecked());
+        activityResultLauncher.launch(intent);
     }
 
 
@@ -92,6 +119,10 @@ public class LoginActivity extends AppCompatActivity {
             setError("Error:", "Email and Password fields cannot be empty.");
             return;
         }
+
+        this.email = email;
+        this.password = password;
+
         mAuth.signInWithEmailAndPassword(email, password).addOnSuccessListener(this::loginUser_success).addOnFailureListener(this::loginUser_failure);
     }
 
@@ -102,8 +133,49 @@ public class LoginActivity extends AppCompatActivity {
     private void loginUser_success(AuthResult authResult) {
 
         setError("Logged in successfully", "Using ErrorBox because lazy again.");
+        if (remember){
+            rememberCredentials(this.email, this.password);
+        }
         startActivity(new Intent(this, HomeActivity.class));
         finish();
+    }
+
+    ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            this::onActivityResult
+    );
+
+    private void onActivityResult(ActivityResult result){
+        if (result.getResultCode() == RESULT_OK){
+            Intent data = result.getData();
+            String email;
+            String password;
+
+            try {
+                email = data.getExtras().getString("email");
+                password = data.getExtras().getString("password");
+                remember = data.getExtras().getBoolean("remember");
+            } catch (NullPointerException e){
+                setError("Data missing, please login!", e.getMessage());
+                return;
+            }
+
+
+
+            loginUser(email, password);
+
+        } else {
+            setError("Something went wrong...", "Please try logging in or signing up again.\nResult Code" + result.getResultCode());
+        }
+    }
+
+    private void rememberCredentials(String email, String password){
+        SharedPreferences sp = getSharedPreferences("authCreds", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("email", email);
+        editor.putString("password", password);
+        editor.apply();
+
     }
 
 
