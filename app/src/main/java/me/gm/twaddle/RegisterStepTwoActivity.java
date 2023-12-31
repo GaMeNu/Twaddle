@@ -123,8 +123,6 @@ public class RegisterStepTwoActivity extends AppCompatActivity {
         usernameIntent.putExtra("email", this.email);
 
         activityResultLauncher.launch(usernameIntent);
-
-        finish();
     }
 
     private void onActivityResult(ActivityResult result){

@@ -6,10 +6,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import org.jetbrains.annotations.TestOnly;
 
 public class RegisterStepThreeActivity extends AppCompatActivity {
 
@@ -32,25 +35,26 @@ public class RegisterStepThreeActivity extends AppCompatActivity {
         errTitle = findViewById(R.id.tv_errTitle_registerNames);
         errDesc = findViewById(R.id.tv_errDesc_registerNames);
 
-        btnBack = findViewById(R.id.btn_register_namesBack);
         btnConfirm = findViewById(R.id.btn_register_namesConfirm);
 
         etDisplayName = findViewById(R.id.et_register_displayName);
         etTag = findViewById(R.id.et_register_tag);
 
         btnConfirm.setOnClickListener(this::onClick_confirm);
-        btnBack.setOnClickListener(this::onClick_back);
 
         Intent credentials = getIntent();
-        defaultUsername = credentials.getStringExtra("email").split("@")[0];
+        //defaultUsername = (credentials.getStringExtra("email").split("@")[0]);
+        String email = (credentials.getStringExtra("email"));
+        String[] s = email.split("@");
+        defaultUsername = s[0];
         etDisplayName.setText(defaultUsername);
         etTag.setText(defaultUsername);
 
-        etDisplayName.setText(credentials.getStringExtra("email"));
+        // etDisplayName.setText(credentials.getStringExtra("email"));
     }
 
     private void onClick_confirm(View view) {
-        if (view.getId() != btnConfirm.getId()){
+        if (view.getId() == btnConfirm.getId()){
             saveUsernames(etDisplayName.getText().toString(), etTag.getText().toString());
             setResult(RESULT_OK);
             finish();
