@@ -3,12 +3,14 @@ package me.gm.twaddle;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -56,7 +58,8 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         getSupportFragmentManager().beginTransaction().replace(R.id.home_container,homeFragment).commit();
-
+        
+        bottomNavigationView.setOnItemSelectedListener(this::onNavbarItemSelect);
 
         OnBackPressedCallback backPressedCallback = new OnBackPressedCallback(true) {
             @Override
@@ -66,6 +69,35 @@ public class HomeActivity extends AppCompatActivity {
             }
         };
         getOnBackPressedDispatcher().addCallback(backPressedCallback);
+    }
+
+    private boolean onNavbarItemSelect(MenuItem menuItem) {
+
+        // TODO: animation when switching fragments?
+
+        switch (menuItem.getItemId()){
+            case R.id.navBar_home:
+                replaceFragment(homeFragment);
+                return true;
+            case R.id.navBar_directs:
+                replaceFragment(directMessagesFragment);
+                return true;
+            case R.id.navBar_servers:
+                replaceFragment(serversFragment);
+                return true;
+            case R.id.navBar_settings:
+                /* TODO: implement Settings activity here and remove the fragment)
+                 * Settings feel more settings-y to me as a seperate activity.
+                 */
+                replaceFragment(settingsFragment);
+                return true;
+        }
+
+        return false;
+    }
+
+    private void replaceFragment(Fragment fragment){
+        getSupportFragmentManager().beginTransaction().replace(R.id.home_container, fragment).commit();
     }
 
     private void updateDetailsFromServer() {

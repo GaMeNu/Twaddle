@@ -7,7 +7,7 @@
         android:icon="@drawable/outline_home"
         android:iconTint="@color/menu_item" />
 
-    <item android:id="@+id/navBar_privateMessages"
+    <item android:id="@+id/navBar_directs"
         android:title="Directs"
         android:titleCondensed="Directs"
         android:icon="@drawable/outline_chat_bubble_outline_24"
