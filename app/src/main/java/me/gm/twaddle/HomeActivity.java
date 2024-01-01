@@ -9,12 +9,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.google.firebase.FirebaseNetworkException;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.logging.Logger;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -24,12 +21,31 @@ public class HomeActivity extends AppCompatActivity {
     private String tag;
     private FirebaseAuth mAuth;
 
+    BottomNavigationView bottomNavigationView;
+
+    HomeFragment homeFragment;
+    DirectMessagesFragment directMessagesFragment;
+    ServersFragment serversFragment;
+    SettingsFragment settingsFragment;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
         mAuth = FirebaseAuth.getInstance();
+
+
+        homeFragment = new HomeFragment();
+        directMessagesFragment = new DirectMessagesFragment();
+        serversFragment = new ServersFragment();
+        settingsFragment = new SettingsFragment();
+
+        bottomNavigationView = findViewById(R.id.home_bottomNavMenu);
+
+
 
         offlineMode = getIntent().getBooleanExtra("offlineMode", false);
 
@@ -38,6 +54,9 @@ public class HomeActivity extends AppCompatActivity {
         } else {
             updateDetailsFromServer();
         }
+
+        getSupportFragmentManager().beginTransaction().replace(R.id.home_container,homeFragment).commit();
+
 
         OnBackPressedCallback backPressedCallback = new OnBackPressedCallback(true) {
             @Override

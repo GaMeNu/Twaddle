@@ -41,6 +41,7 @@ public class LauncherActivity extends AppCompatActivity {
         // Check if there's internet
         if (!NetworkUtils.hasActiveInternetConnection(LauncherActivity.this)){
             handleOfflineMode();
+            return;
         }
 
 

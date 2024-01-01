@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:id="@+id/navBar_home"
+        android:title="Home"
+        android:icon="@drawable/outline_home"
+        android:iconTint="@color/menu_item" />
+
+    <item android:id="@+id/navBar_privateMessages"
+        android:title="Directs"
+        android:titleCondensed="Directs"
+        android:icon="@drawable/outline_chat_bubble_outline_24"
+        android:iconTint="@color/menu_item"/>
+
+    <item android:id="@+id/navBar_servers"
+        android:title="Servers"
+        android:icon="@drawable/outline_people_alt_24"
+        android:iconTint="@color/menu_item"/>
+
+    <item android:id="@+id/navBar_settings"
+        android:title="Settings"
+        android:icon="@drawable/outline_settings_24"
+        android:iconTint="@color/menu_item" />
+
+</menu>
