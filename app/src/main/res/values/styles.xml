@@ -43,6 +43,7 @@
 
     <style name="BottomNavigationView.NavBar" parent="Widget.Design.BottomNavigationView">
         <!--
+         
          android:layout_width="match_parent"
         android:layout_height="80sp"
         android:background="@drawable/infobox_background"
@@ -53,6 +54,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">80sp</item>
         <item name="background">@drawable/round_box_generic</item>
+        <item name="android:background">@drawable/round_box_generic</item>
         <item name="backgroundTint">@color/background_accent_d</item>
         <item name="itemIconTint">@color/menu_item</item>
         <item name="itemTextColor">@color/menu_item</item>

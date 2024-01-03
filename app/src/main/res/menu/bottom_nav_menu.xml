@@ -4,7 +4,7 @@
 
     <item android:id="@+id/navBar_home"
         android:title="Home"
-        android:icon="@drawable/outline_home"
+        android:icon="@drawable/icon_home"
         android:iconTint="@color/menu_item" />
 
     <item android:id="@+id/navBar_directs"
