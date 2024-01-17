@@ -5,22 +5,23 @@
     <item android:id="@+id/navBar_home"
         android:title="Home"
         android:icon="@drawable/icon_home"
-        android:iconTint="@color/menu_item" />
+        android:iconTint="@color/menu_item"
+        android:checked="true"/>
 
     <item android:id="@+id/navBar_directs"
         android:title="Directs"
         android:titleCondensed="Directs"
-        android:icon="@drawable/outline_chat_bubble_outline_24"
+        android:icon="@drawable/icon_directs"
         android:iconTint="@color/menu_item"/>
 
     <item android:id="@+id/navBar_servers"
         android:title="Servers"
-        android:icon="@drawable/outline_people_alt_24"
+        android:icon="@drawable/icon_servers"
         android:iconTint="@color/menu_item"/>
 
     <item android:id="@+id/navBar_settings"
         android:title="Settings"
-        android:icon="@drawable/outline_settings_24"
+        android:icon="@drawable/icon_settings"
         android:iconTint="@color/menu_item" />
 
 </menu>
