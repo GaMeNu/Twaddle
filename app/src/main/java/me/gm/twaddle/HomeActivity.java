@@ -11,20 +11,24 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import me.gm.twaddle.c2s.WSClient;
+
 public class HomeActivity extends AppCompatActivity {
+
+    private RecyclerView directs_chats;
 
     private boolean offlineMode;
 
     private String displayName;
     private String tag;
     private FirebaseAuth mAuth;
+    private WSAPI wsApi;
 
     BottomNavigationView bottomNavigationView;
 
@@ -33,6 +37,9 @@ public class HomeActivity extends AppCompatActivity {
     ServersFragment serversFragment;
     SettingsFragment settingsFragment;
 
+    boolean receivedFirstPayload = false;
+
+    boolean isConnected;
 
 
     @Override
@@ -42,6 +49,41 @@ public class HomeActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        String wsUri = getIntent().getStringExtra("ws_uri");
+        Log.i("HOME", wsUri);
+        wsApi = new WSAPI(wsUri);
+        wsApi.getClient().addErrorHandler("oe_homeActivity1", e -> {
+            Log.i("HOME", "Successfully added Handler");
+            if (e instanceof IllegalArgumentException){
+                new AlertDialog.Builder(HomeActivity.this)
+                    .setTitle("Error: No Internet/WebSocket")
+                    .setMessage(
+                            "The app requires an active internet connection.\n" +
+                            "It also requires a WebSocket connection to the Twaddle Server.\n" +
+                            "Please try again once you have both available.")
+                    .setPositiveButton("Okay", (dialogInterface, i) -> {
+                        finishAffinity();
+                    })
+                    .show();
+            }
+        });
+
+        wsApi.getClient().addOpenHandler("oo_home_setConnected", serverHandshake -> {
+            isConnected = true;
+
+            if (getIntent().getBooleanExtra("register_new", false)){
+                SharedPreferences sp = getSharedPreferences("authCreds", MODE_PRIVATE);
+                wsApi.reqs.registerUser(
+                        getIntent().getStringExtra("uid"),
+                        sp.getString("tag", ""),
+                        sp.getString("username", "")
+                );
+            }
+
+            wsApi.getClient().removeOpenHandler("oo_home_setConnected");
+        });
+
+        wsApi.connect();
 
         homeFragment = new HomeFragment();
         directMessagesFragment = new DirectMessagesFragment();
@@ -49,8 +91,6 @@ public class HomeActivity extends AppCompatActivity {
         settingsFragment = new SettingsFragment();
 
         bottomNavigationView = findViewById(R.id.home_bottomNavMenu);
-
-
 
         offlineMode = getIntent().getBooleanExtra("offlineMode", false);
 
@@ -72,6 +112,10 @@ public class HomeActivity extends AppCompatActivity {
             }
         };
         getOnBackPressedDispatcher().addCallback(backPressedCallback);
+    }
+
+    public WSAPI getWsApi() {
+        return wsApi;
     }
 
     private boolean onNavbarItemSelect(MenuItem menuItem) {

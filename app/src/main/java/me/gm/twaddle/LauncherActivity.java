@@ -3,21 +3,34 @@ package me.gm.twaddle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.EditText;
 
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.logging.Logger;
+import org.java_websocket.handshake.ServerHandshake;
+
+import java.net.URI;
+import java.nio.channels.Channel;
+
+import me.gm.twaddle.c2s.WSClient;
 
 public class LauncherActivity extends AppCompatActivity {
 
     String email, password;
     FirebaseAuth mAuth;
+    EditText etWsUri;
+    String wsUri;
+    boolean webSocketAvailable;
+    private WSClient wsClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,33 +51,66 @@ public class LauncherActivity extends AppCompatActivity {
         this.email = email;
         this.password = password;
 
-        // Check if there's internet
-        if (!NetworkUtils.hasActiveInternetConnection(LauncherActivity.this)){
-            handleOfflineMode();
-            return;
-        }
+//        // Check if there's internet
+//        if (!NetworkUtils.hasActiveInternetConnection(LauncherActivity.this)){
+//            handleOfflineMode();
+//            return;
+//        }
 
+        etWsUri = new EditText(LauncherActivity.this);
+
+        new AlertDialog.Builder(LauncherActivity.this)
+                .setTitle("Please enter the server's WebSocket URI")
+                .setView(etWsUri)
+                .setPositiveButton("Confirm", this::onWSDialogPositive)
+                .setNegativeButton("Cancel",this::onWSDialogNegative)
+                .setCancelable(false)
+                .show();
+
+    }
+
+    private void onWSDialogPositive(DialogInterface dialogInterface, int i) {
+        wsUri = etWsUri.getText().toString();
+        wsClient = new WSClient(URI.create(wsUri));
+
+        wsClient.addOpenHandler("oo_launcher", this::onWSConnect);
+        wsClient.addErrorHandler("oe_launcher", this::onWSException);
+        wsClient.connect();
+
+    }
+
+    private void onWSException(Exception e) {
+        Log.e("LAUNCHER", "Exception when attempting to connect to WS", e);
+        handleOfflineMode();
+    }
+
+    private void onWSConnect(ServerHandshake serverHandshake) {
+        wsClient.close();
+
+        // Check if we have saved credentials
 
         if (email != null && password != null){
             loginUser(email, password);
-
         } else {
-            startActivity(new Intent(this, LoginActivity.class));
+            startActivity(new Intent(this, LoginActivity.class).putExtra("ws_uri", wsUri));
         }
     }
 
-    private void handleOfflineMode() {
-        if (this.email == null || this.password == null){
-            startActivity(new Intent(LauncherActivity.this, LoginActivity.class));
-            finish();
-            return;
-        }
+    private void onWSDialogNegative(DialogInterface dialogInterface, int i) {
+        finishAffinity();
+    }
 
-        startActivity(
-                new Intent(LauncherActivity.this, HomeActivity.class)
-                .putExtra("offlineMode", true)
-        );
-        finish();
+    private void handleOfflineMode() {
+        new AlertDialog.Builder(LauncherActivity.this)
+                .setTitle("Error: No Internet/WebSocket")
+                .setMessage(
+                        "The app requires an active internet connection.\n" +
+                        "It also requires a WebSocket connection to the Twaddle Server.\n" +
+                        "Please try again once you have both available.")
+                .setPositiveButton("Okay", (dialogInterface, i) -> {
+                    finishAffinity();
+                })
+                .show();
 
     }
 
@@ -93,7 +139,12 @@ public class LauncherActivity extends AppCompatActivity {
     }
 
     private void loginUser_success(AuthResult authResult) {
-        startActivity(new Intent(this, HomeActivity.class));
+
+        if (wsClient.isOpen()){
+            wsClient.close();
+        }
+
+        startActivity(new Intent(this, HomeActivity.class).putExtra("ws_uri", wsUri));
         finish();
     }
 
@@ -101,6 +152,7 @@ public class LauncherActivity extends AppCompatActivity {
         startActivity(new Intent(this, LoginActivity.class)
                 .putExtra("startForLogin", true)
                 .putExtra("email", email)
-                .putExtra("password", password));
+                .putExtra("password", password)
+                .putExtra("ws_uri", wsUri));
     }
 }

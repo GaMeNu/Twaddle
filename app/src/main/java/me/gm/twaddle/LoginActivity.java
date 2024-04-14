@@ -19,6 +19,8 @@ import android.widget.TextView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.logging.LoggingMXBean;
+
 public class LoginActivity extends AppCompatActivity {
 
     TextView errorTitle;
@@ -38,6 +40,8 @@ public class LoginActivity extends AppCompatActivity {
     String password;
 
     boolean remember;
+
+    boolean register_new;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,11 +136,20 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginUser_success(AuthResult authResult) {
 
+        Intent intent = new Intent(this, HomeActivity.class);
         setError("Logged in successfully", "Using ErrorBox because lazy again.");
         if (remember){
             rememberCredentials(this.email, this.password);
         }
-        startActivity(new Intent(this, HomeActivity.class));
+
+        if (register_new){
+            intent.putExtra("register_new", true)
+                    .putExtra("uid", authResult.getUser().getUid());
+        }
+
+        intent.putExtra("ws_uri", getIntent().getStringExtra("ws_uri"));
+
+        startActivity(intent);
         finish();
     }
 
@@ -150,6 +163,8 @@ public class LoginActivity extends AppCompatActivity {
             Intent data = result.getData();
             String email;
             String password;
+
+            register_new = true;
 
             try {
                 email = data.getExtras().getString("email");

@@ -81,7 +81,7 @@
             android:fontFamily="@font/outfit_light"
             android:hint="Email"
             android:inputType="text"
-            android:textColor="@color/primary_var_d"
+            android:textColor="@color/text_d"
             android:textColorHint="@color/text_secondary_d"
             android:textSize="24sp" />
 

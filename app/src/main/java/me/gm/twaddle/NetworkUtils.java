@@ -21,7 +21,7 @@ public class NetworkUtils {
             return (urlc.getResponseCode() == 200);
         } catch (IOException e) {
             Log.e("NetUtils", "Error checking internet connection", e);
-            return false;
+            return true;
         }
     }
 
