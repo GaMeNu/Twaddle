@@ -37,6 +37,7 @@
         <item name="android:layout_height">60sp</item>
         <item name="android:textColorHint">@color/text_secondary_d</item>
         <item name="hintTextColor">@color/text_secondary_d</item>
+        <item name="fontFamily">@font/outfit_regular</item>
         <item name="android:textColor">@color/text_d</item>
         <item name="android:textSize">24sp</item>
     </style>

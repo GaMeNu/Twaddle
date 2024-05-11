@@ -19,7 +19,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
-import java.nio.channels.Channel;
 
 import me.gm.twaddle.c2s.WSClient;
 
@@ -70,7 +69,7 @@ public class LauncherActivity extends AppCompatActivity {
     }
 
     private void onWSDialogPositive(DialogInterface dialogInterface, int i) {
-        wsUri = etWsUri.getText().toString();
+        wsUri = etWsUri.getText().toString().trim();
         wsClient = new WSClient(URI.create(wsUri));
 
         wsClient.addOpenHandler("oo_launcher", this::onWSConnect);
@@ -92,7 +91,8 @@ public class LauncherActivity extends AppCompatActivity {
         if (email != null && password != null){
             loginUser(email, password);
         } else {
-            startActivity(new Intent(this, LoginActivity.class).putExtra("ws_uri", wsUri));
+            startActivity(new Intent(this, LoginActivity.class)
+                    .putExtra("ws_uri", wsUri));
         }
     }
 
@@ -107,9 +107,7 @@ public class LauncherActivity extends AppCompatActivity {
                         "The app requires an active internet connection.\n" +
                         "It also requires a WebSocket connection to the Twaddle Server.\n" +
                         "Please try again once you have both available.")
-                .setPositiveButton("Okay", (dialogInterface, i) -> {
-                    finishAffinity();
-                })
+                .setPositiveButton("Okay", (dialogInterface, i) -> finishAffinity())
                 .show();
 
     }
@@ -131,6 +129,8 @@ public class LauncherActivity extends AppCompatActivity {
 
     private void loginUser_failure(Exception e) {
         if (e instanceof FirebaseNetworkException){
+            Log.e("LAUNCHER", "Network Error:",
+                    e);
             handleOfflineMode();
         } else {
             startActivityForLogin(email, password);

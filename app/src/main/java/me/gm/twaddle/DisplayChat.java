@@ -8,14 +8,27 @@ public class DisplayChat{
     int unreads;
 
     long lastMessage;
+
+    String lastMsgPreview;
+
     long timeLastMsg;
 
-    public DisplayChat(long chatID, String name, int unreads, long lastMessage, long timeLastMsg) {
+    public DisplayChat(long chatID, String name, int unreads, long lastMessage, String lastMsgPreview, long timeLastMsg) {
         this.chatID = chatID;
         this.name = name;
         this.unreads = unreads;
         this.lastMessage = lastMessage;
+        this.lastMsgPreview = lastMsgPreview;
         this.timeLastMsg = timeLastMsg;
+    }
+
+    public String getLastMsgPreview() {
+        return lastMsgPreview;
+    }
+
+    public DisplayChat setLastMsgPreview(String lastMsgPreview) {
+        this.lastMsgPreview = lastMsgPreview;
+        return this;
     }
 
     public long getChatID() {

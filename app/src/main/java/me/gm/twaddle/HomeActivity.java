@@ -17,9 +17,15 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
-import me.gm.twaddle.c2s.WSClient;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import me.gm.twaddle.c2s.Payload;
+import me.gm.twaddle.c2s.WSAPI;
 
 public class HomeActivity extends AppCompatActivity {
+
+    private final String TAG = "HOME";
 
     private RecyclerView directs_chats;
 
@@ -50,10 +56,11 @@ public class HomeActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         String wsUri = getIntent().getStringExtra("ws_uri");
-        Log.i("HOME", wsUri);
+
+        Log.i(TAG, wsUri);
         wsApi = new WSAPI(wsUri);
         wsApi.getClient().addErrorHandler("oe_homeActivity1", e -> {
-            Log.i("HOME", "Successfully added Handler");
+            Log.i(TAG, "Successfully added Handler");
             if (e instanceof IllegalArgumentException){
                 new AlertDialog.Builder(HomeActivity.this)
                     .setTitle("Error: No Internet/WebSocket")
@@ -65,6 +72,8 @@ public class HomeActivity extends AppCompatActivity {
                         finishAffinity();
                     })
                     .show();
+            } else {
+                Log.e(TAG, "WebSocket Error:", e);
             }
         });
 
@@ -72,16 +81,33 @@ public class HomeActivity extends AppCompatActivity {
             isConnected = true;
 
             if (getIntent().getBooleanExtra("register_new", false)){
+
+
                 SharedPreferences sp = getSharedPreferences("authCreds", MODE_PRIVATE);
-                wsApi.reqs.registerUser(
-                        getIntent().getStringExtra("uid"),
-                        sp.getString("tag", ""),
-                        sp.getString("username", "")
-                );
+                Payload res = null;
+                wsApi.reqs().registerUser(
+                                getIntent().getStringExtra("uid"),
+                                sp.getString("tag", ""),
+                                sp.getString("username", "")
+                ).onResponse(this::setAuthCreds).send();
+
             }
+
+            if (getSharedPreferences("authCreds", MODE_PRIVATE).getInt("user_id", 0) == 0){
+                Log.i(TAG,"We don't have a user ID :(");
+                JSONObject data = null;
+                wsApi.reqs().loginUser(
+                        mAuth.getUid()
+                ).onResponse(this::setAuthCreds).send();
+
+            }
+
+            Log.i(TAG, String.valueOf(getSharedPreferences("authCreds", MODE_PRIVATE).getInt("user_id", 0)));
 
             wsApi.getClient().removeOpenHandler("oo_home_setConnected");
         });
+
+        WSInstanceManager.setInstance(wsApi);
 
         wsApi.connect();
 
@@ -133,9 +159,6 @@ public class HomeActivity extends AppCompatActivity {
                 replaceFragment(serversFragment);
                 return true;
             case R.id.navBar_settings:
-                /* TODO: implement Settings activity here and remove the fragment)
-                 * Settings feel more settings-y to me as a seperate activity.
-                 */
                 replaceFragment(settingsFragment);
                 return true;
         }
@@ -173,8 +196,37 @@ public class HomeActivity extends AppCompatActivity {
         dialogInterface.dismiss();
     }
 
+
     private void onQuitDialogPositive(DialogInterface dialogInterface, int i) {
         finishAffinity();
+    }
+
+    private void setAuthCreds(Payload pl){
+        int userID = 0;
+        String userTag, userName;
+
+        Log.i("HOME", pl.getData().toString());
+        try {
+            JSONObject userData = pl.getData().getJSONObject("data");
+
+            userID = userData.getInt("user_id");
+            userTag = userData.getString("user_tag");
+            userName = userData.getString("user_name");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (userID == 0){
+            Log.e("HOME", "The server has failed me! We must abort the app!");
+            finishAffinity();
+        }
+
+        getSharedPreferences("authCreds", MODE_PRIVATE).edit()
+                .putInt("user_id", userID)
+                .putString("tag", userTag)
+                .putString("username", userName)
+                .apply();
+
     }
 
     private void logoutUser(){

@@ -33,7 +33,8 @@ public class WSClient extends WebSocketClient {
     public void onOpen(ServerHandshake handshakedata) {
         Log.i(TAG, "Connected to server");
         Log.i(TAG, String.format("[%d] %s", handshakedata.getHttpStatus(), handshakedata.getHttpStatusMessage()));
-        for (Consumer<ServerHandshake> handler : onOpenHandlers.values()) {
+        List<Consumer<ServerHandshake>> iterLs = new ArrayList<>(onOpenHandlers.values());
+        for (Consumer<ServerHandshake> handler : iterLs) {
             handler.accept(handshakedata);
         }
     }
@@ -42,7 +43,8 @@ public class WSClient extends WebSocketClient {
     public void onMessage(String message) {
         Log.i(TAG, "Received data from server! Look forward for the next log entry...");
         Log.i(TAG, message);
-        for (Consumer<String> handler : onMessageHandlers.values()) {
+        List<Consumer<String>> iterLs = new ArrayList<>(onMessageHandlers.values());
+        for (Consumer<String> handler : iterLs) {
             handler.accept(message);
         }
     }
@@ -51,7 +53,8 @@ public class WSClient extends WebSocketClient {
     public void onClose(int code, String reason, boolean remote) {
         Log.i(TAG, "Connection closed");
         CloseEvent ce = new CloseEvent(code, reason, remote);
-        for (Consumer<CloseEvent> handler : onCloseHandlers.values()) {
+        List<Consumer<CloseEvent>> iterLs = new ArrayList<>(onCloseHandlers.values());
+        for (Consumer<CloseEvent> handler : iterLs) {
             handler.accept(ce);
         }
     }
@@ -59,7 +62,8 @@ public class WSClient extends WebSocketClient {
     @Override
     public void onError(Exception ex) {
         Log.e(TAG, String.valueOf(ex));
-        for (Consumer<Exception> handler : onErrorHandlers.values()) {
+        List<Consumer<Exception>> iterLs = new ArrayList<>(onErrorHandlers.values());
+        for (Consumer<Exception> handler : iterLs) {
             handler.accept(ex);
         }
     }

@@ -19,8 +19,6 @@ import android.widget.TextView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.logging.LoggingMXBean;
-
 public class LoginActivity extends AppCompatActivity {
 
     TextView errorTitle;
@@ -43,6 +41,8 @@ public class LoginActivity extends AppCompatActivity {
 
     boolean register_new;
 
+    String wsUri;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +64,8 @@ public class LoginActivity extends AppCompatActivity {
 
         btnLogin.setOnClickListener(this::onClick_login);
         btnRegister.setOnClickListener(this::onClick_register);
+
+        wsUri = getIntent().getExtras().getString("ws_uri");
 
         if (getIntent().getExtras() != null && getIntent().getExtras().getBoolean("startForLogin", false)) {
             try {
@@ -147,7 +149,7 @@ public class LoginActivity extends AppCompatActivity {
                     .putExtra("uid", authResult.getUser().getUid());
         }
 
-        intent.putExtra("ws_uri", getIntent().getStringExtra("ws_uri"));
+        intent.putExtra("ws_uri", wsUri);
 
         startActivity(intent);
         finish();
