@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +20,9 @@ import android.widget.Button;
 public class SettingsFragment extends Fragment {
 
     Button btnLogout;
+
+    TextView tvUsername;
+    TextView tvUsertag;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,6 +33,12 @@ public class SettingsFragment extends Fragment {
 
         btnLogout = v.findViewById(R.id.btn_logOut);
         btnLogout.setOnClickListener(this::onClick_logout);
+
+        tvUsername = v.findViewById(R.id.tv_settings_username);
+        tvUsertag = v.findViewById(R.id.tv_settings_usertag);
+
+        tvUsername.setText(WSInstanceManager.getUserData().username());
+        tvUsertag.setText(WSInstanceManager.getUserData().userTag());
         
         return v;
     }

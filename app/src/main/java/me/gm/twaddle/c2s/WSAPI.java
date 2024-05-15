@@ -1,5 +1,7 @@
 package me.gm.twaddle.c2s;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -90,18 +92,18 @@ public class WSAPI {
          * @param fn Function to run
          * @return self
          */
-        public Requests onResponse(Consumer<Payload> fn){
+        public Requests onResponse(Consumer<RespPayload> fn){
 
             String id = "om_reqsAfter_" + reqsCounter;
             reqsCounter++;
 
             WSAPI.this.getClient().addMessageHandler(id, s -> {
                 WSAPI.this.getClient().removeMessageHandler(id);
-                Payload pl;
+                RespPayload pl;
 
 
                 try {
-                    pl = Payload.fromString(s);
+                    pl = RespPayload.fromString(s);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
@@ -113,6 +115,7 @@ public class WSAPI {
         }
 
         public void send(){
+            Log.i(TAG, "Requstin' from da server. Request Payload:\n" + pendingPayload.serialize().toString());
             WSAPI.this.sendPayload(pendingPayload);
             pendingPayload = null;
         }

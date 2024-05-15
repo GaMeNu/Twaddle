@@ -24,6 +24,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        style="@style/EditText.Input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/outfit_regular"
@@ -39,7 +40,7 @@
         style="@style/Button.Primary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add"
+        android:text="Create"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

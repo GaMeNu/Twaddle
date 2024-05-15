@@ -1,5 +1,14 @@
 package me.gm.twaddle;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import me.gm.twaddle.c2s.RespPayload;
+
 public class DisplayChat{
 
     long chatID;
@@ -75,4 +84,41 @@ public class DisplayChat{
         this.timeLastMsg = timeLastMsg;
         return this;
     }
+
+    public static DisplayChat fromJSONObject(JSONObject obj){
+        DisplayChat res;
+        try {
+            res = new DisplayChat(
+                    obj.getLong("chat_id"),
+                    obj.getString("name"),
+                    obj.getInt("unreads"),
+                    obj.getLong("last_message"),
+                    obj.getString("last_msg_preview"),
+                    obj.getLong("time_last_msg")
+            );
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        return res;
+    }
+
+    public static List<DisplayChat> fromPayload(RespPayload pl){
+        JSONArray chats;
+        ArrayList<DisplayChat> res = new ArrayList<>();
+        try {
+            chats = pl.getData().getJSONObject("data").getJSONArray("chats");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        for (int i = 0; i < chats.length(); i++){
+            try {
+                res.add(DisplayChat.fromJSONObject(chats.getJSONObject(i)));
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return res;
+    }
+
 }

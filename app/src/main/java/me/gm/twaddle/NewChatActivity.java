@@ -3,17 +3,14 @@ package me.gm.twaddle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import me.gm.twaddle.c2s.Payload;
+import me.gm.twaddle.c2s.RespPayload;
 import me.gm.twaddle.c2s.WSAPI;
 
 public class NewChatActivity extends AppCompatActivity {
@@ -27,6 +24,8 @@ public class NewChatActivity extends AppCompatActivity {
     LinearLayout errBox;
 
     private WSAPI wsApi;
+
+    private static final char[] validTagChars = "abcdefghijklmnopqrstuvwxyz0123456789._".toCharArray();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,35 +45,99 @@ public class NewChatActivity extends AppCompatActivity {
 
     }
 
+    private static boolean isValidChar(char ch){
+        for (char c : validTagChars){
+            if (ch == c) return true;
+        }
+
+        return false;
+    }
+
+
+
     private void onClick_btnNewChat(View view) {
         if (view.getId() != newChat.getId()){
             return;
         }
 
+        resetError();
+
         String tag = addTag.getText().toString();
 
         if (tag.isEmpty()){
-            errTitle.setText("Failed to create new chat");
-            errDesc.setText("Tag can't be empty");
-            errBox.setVisibility(View.VISIBLE);
+            setError("Failed to create new chat", "Tag can't be empty");
+            return;
         }
+
+        if (tag.charAt(0) == '@'){
+            if (tag.length() == 1){
+                setError("Failed to create new chat", "Tag cannot be empty.");
+                return;
+            }
+            tag = tag.substring(1);
+        }
+
+        for (int i = 0; i < tag.length(); i++){
+            char curChar = tag.charAt(i);
+            if (!isValidChar(curChar)){
+                setError("Failed to create new chat", "Tag must only contain alphanumeric, '.', or '_' characters.");
+                return;
+            }
+        }
+
         int userID = getSharedPreferences("authCreds", MODE_PRIVATE).getInt("user_id", 0);
         if (userID == 0){
-            errTitle.setText("Failed to create new chat");
-            errDesc.setText("Could not find sneder UserID");
-            errBox.setVisibility(View.VISIBLE);
+            setError("Failed to create new chat", "Could not find your user ID");
+            return;
         }
 
         Payload res;
 
-        try {
-            res = Payload.event(Payload.Events.CREATE_USER_CHAT, new JSONObject()
-                    .put("orig_user_id", userID)
-                    .put("recv_user_tag", tag));
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
+        wsApi.reqs()
+                .createChat(userID, tag)
+                .onResponse(this::onResponse_newChat)
+                .send();
+
+
+    }
+
+    /**
+     * Check if we created the new chat or not
+     * If not, set the errbox
+     * else finish the activity (reloading chats will occur automatically)
+     * @param pl the response payload
+     */
+    private void onResponse_newChat(RespPayload pl){
+        if (!pl.isSuccessful()){
+
+            setError("Failed to create new chat", "Serverside error");
+            return;
         }
 
-        Log.i("NEWCHAT", res.getData().toString());
+        finish();
+    }
+
+    /**
+     * Set the errorbox
+     * @param title errbox title
+     * @param desc errbox description
+     */
+    private void setError(CharSequence title, CharSequence desc){
+        runOnUiThread(() -> {
+            errTitle.setText(title);
+            errDesc.setText(desc);
+            errBox.setVisibility(View.VISIBLE);
+        });
+    }
+
+    /**
+     * Reset the errorbox
+     */
+    private void resetError(){
+        runOnUiThread(() -> {
+            errTitle.setText("");
+            errDesc.setText("");
+            errBox.setVisibility(View.INVISIBLE);
+        });
     }
 }

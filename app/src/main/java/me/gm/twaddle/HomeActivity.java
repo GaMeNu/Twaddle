@@ -57,6 +57,7 @@ public class HomeActivity extends AppCompatActivity {
 
         String wsUri = getIntent().getStringExtra("ws_uri");
 
+
         Log.i(TAG, wsUri);
         wsApi = new WSAPI(wsUri);
         wsApi.getClient().addErrorHandler("oe_homeActivity1", e -> {
@@ -90,7 +91,6 @@ public class HomeActivity extends AppCompatActivity {
                                 sp.getString("tag", ""),
                                 sp.getString("username", "")
                 ).onResponse(this::setAuthCreds).send();
-
             }
 
             if (getSharedPreferences("authCreds", MODE_PRIVATE).getInt("user_id", 0) == 0){
@@ -102,7 +102,13 @@ public class HomeActivity extends AppCompatActivity {
 
             }
 
-            Log.i(TAG, String.valueOf(getSharedPreferences("authCreds", MODE_PRIVATE).getInt("user_id", 0)));
+            WSInstanceManager.getUserData()
+                    .userID(getSharedPreferences("authCreds", MODE_PRIVATE).getInt("user_id", 0))
+                    .firebaseID(mAuth.getUid())
+                    .username(displayName)
+                    .userTag(tag);
+
+
 
             wsApi.getClient().removeOpenHandler("oo_home_setConnected");
         });

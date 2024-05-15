@@ -3,6 +3,7 @@ package me.gm.twaddle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +85,14 @@ public class DisplayChatAdapter extends RecyclerView.Adapter<DisplayChatAdapter.
         if (chat.unreads > 0) holder.unreadBubble.setVisibility(View.VISIBLE);
         else holder.unreadBubble.setVisibility(View.GONE);
 
-        holder.msgPreview.setText(chat.getLastMsgPreview());
+        if (!chat.getLastMsgPreview().isEmpty()) {
+            holder.msgPreview.setTextColor(Color.WHITE);
+            holder.msgPreview.setText(chat.getLastMsgPreview());
+        }
+        else {
+            holder.msgPreview.setTextColor(Color.GRAY);
+            holder.msgPreview.setText("Nothing to see here... yet!");
+        }
 
         holder.itemView.setOnClickListener(view -> view.getContext().startActivity(
                 new Intent(view.getContext(), SingleChatActivity.class)

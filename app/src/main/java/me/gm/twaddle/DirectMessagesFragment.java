@@ -16,6 +16,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import me.gm.twaddle.c2s.WSAPI;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -23,6 +25,20 @@ public class DirectMessagesFragment extends Fragment {
 
     RecyclerView chats;
     FloatingActionButton btnNewChat;
+
+    WSAPI wsApi = WSInstanceManager.getInstance();
+
+    private void requestChatsReload(View v){
+        wsApi.reqs()
+                .loadChats(WSInstanceManager.getUserData().userID())
+                .onResponse(pl -> {
+                    getActivity().runOnUiThread(() -> {
+                        DisplayChatAdapter adapter = new DisplayChatAdapter(v.getContext(), DisplayChat.fromPayload(pl));
+                        chats.setAdapter(adapter);
+                    });
+                })
+                .send();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,6 +53,7 @@ public class DirectMessagesFragment extends Fragment {
         btnNewChat = v.findViewById(R.id.btn_newChat);
         btnNewChat.setOnClickListener(this::onClick_btnNewChat);
 
+        requestChatsReload(v);
         DisplayChat[] arr = {
                 new DisplayChat(
                         1,
@@ -123,11 +140,13 @@ public class DirectMessagesFragment extends Fragment {
 
         ArrayList<DisplayChat> objs = new ArrayList<>(Arrays.asList(arr));
 
-        DisplayChatAdapter adapter = new DisplayChatAdapter(v.getContext(), objs);
-
-        chats.setAdapter(adapter);
-
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        requestChatsReload(this.getView());
     }
 
     private void onClick_btnNewChat(View view) {

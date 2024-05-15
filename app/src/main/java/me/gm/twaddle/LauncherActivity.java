@@ -86,6 +86,8 @@ public class LauncherActivity extends AppCompatActivity {
     private void onWSConnect(ServerHandshake serverHandshake) {
         wsClient.close();
 
+        WSInstanceManager.newUserData();
+
         // Check if we have saved credentials
 
         if (email != null && password != null){
