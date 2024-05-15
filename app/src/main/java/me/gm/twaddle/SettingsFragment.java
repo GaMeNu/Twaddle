@@ -38,7 +38,7 @@ public class SettingsFragment extends Fragment {
         tvUsertag = v.findViewById(R.id.tv_settings_usertag);
 
         tvUsername.setText(WSInstanceManager.getUserData().username());
-        tvUsertag.setText(WSInstanceManager.getUserData().userTag());
+        tvUsertag.setText("@" + WSInstanceManager.getUserData().userTag());
         
         return v;
     }
