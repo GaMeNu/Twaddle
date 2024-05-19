@@ -93,14 +93,14 @@ public class HomeActivity extends AppCompatActivity {
                 ).onResponse(this::setAuthCreds).send();
             }
 
-            if (getSharedPreferences("authCreds", MODE_PRIVATE).getInt("user_id", 0) == 0){
-                Log.i(TAG,"We don't have a user ID :(");
-                JSONObject data = null;
-                wsApi.reqs().loginUser(
-                        mAuth.getUid()
-                ).onResponse(this::setAuthCreds).send();
+            wsApi.reqs().loginUser(
+                    mAuth.getUid()
+            ).onResponse(pl -> {
+                if (getSharedPreferences("authCreds", MODE_PRIVATE).getInt("user_id", 0) == 0){
+                    setAuthCreds(pl);
+                }
+            }).send();
 
-            }
 
             WSInstanceManager.getUserData()
                     .userID(getSharedPreferences("authCreds", MODE_PRIVATE).getInt("user_id", 0))

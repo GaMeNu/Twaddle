@@ -13,9 +13,6 @@ import android.view.ViewGroup;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 import me.gm.twaddle.c2s.WSAPI;
 
 /**
@@ -28,6 +25,11 @@ public class DirectMessagesFragment extends Fragment {
 
     WSAPI wsApi = WSInstanceManager.getInstance();
 
+    /**
+     * Request the webserver to reload the chats.
+     * This will return a JSON Object containing all chats.
+     * @param v View to reload
+     */
     private void requestChatsReload(View v){
         wsApi.reqs()
                 .loadChats(WSInstanceManager.getUserData().userID())
@@ -40,6 +42,19 @@ public class DirectMessagesFragment extends Fragment {
                 .send();
     }
 
+    /**
+     * Set the adapter. Request chat reload.
+     * This WILL throw an error to the log, but it's fine because the empty adapter gets set later.
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,13 +62,19 @@ public class DirectMessagesFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_direct_messages, container, false);
 
+        // Initialise chats RV and request a chats reload (will execute on seperate thread thru WS)
         chats = v.findViewById(R.id.directs_chatsRecyclerView);
         chats.setLayoutManager(new LinearLayoutManager(v.getContext()));
+        requestChatsReload(v);
 
+        // Initialise the Create Chat button and set the OnClick Listener
         btnNewChat = v.findViewById(R.id.btn_newChat);
         btnNewChat.setOnClickListener(this::onClick_btnNewChat);
 
-        requestChatsReload(v);
+        /*
+
+        // Old testing code, please ignore.
+
         DisplayChat[] arr = {
                 new DisplayChat(
                         1,
@@ -140,15 +161,27 @@ public class DirectMessagesFragment extends Fragment {
 
         ArrayList<DisplayChat> objs = new ArrayList<>(Arrays.asList(arr));
 
+        */
         return v;
     }
 
+    /**
+     * On resume - request chat reload.
+     * Mostly useful after exiting a chat or after adding a new chat.
+     * Could probably be optimized by, well,
+     * not spamming the webserver with requests and using what we already have?
+     * Just a thought /s
+     */
     @Override
     public void onResume() {
         super.onResume();
         requestChatsReload(this.getView());
     }
 
+    /**
+     * Create a new chat.
+     * @param view The View to check.
+     */
     private void onClick_btnNewChat(View view) {
         if (view.getId() != btnNewChat.getId()) return;
 

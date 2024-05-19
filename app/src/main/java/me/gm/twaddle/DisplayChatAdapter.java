@@ -97,6 +97,7 @@ public class DisplayChatAdapter extends RecyclerView.Adapter<DisplayChatAdapter.
         holder.itemView.setOnClickListener(view -> view.getContext().startActivity(
                 new Intent(view.getContext(), SingleChatActivity.class)
                         .putExtra("chat_id", chat.getChatID())
+                        .putExtra("chat_name", chat.getName())
         ));
 
     }

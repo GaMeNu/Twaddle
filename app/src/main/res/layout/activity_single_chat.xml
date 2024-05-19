@@ -37,18 +37,62 @@
                     android:hint="Type your message here!"
                     android:inputType="text|textCapSentences|textMultiLine"
                     android:maxLines="4"
-                    android:minHeight="50sp" />
+                    android:minHeight="40sp" />
 
                 <Button
                     android:id="@+id/sc_btnSend"
                     style="@style/Button.Primary"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:layout_margin="10sp"
                     app:icon="@drawable/baseline_send"
+                    app:iconGravity="top"
+                    app:iconPadding="16sp"
+                    app:iconSize="24sp"
                     app:iconTint="@color/text_d" />
             </LinearLayout>
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="40sp"
+                    android:layout_height="40sp"
+                    android:layout_margin="10sp"
+                    app:srcCompat="@drawable/baseline_person" />
+
+                <TextView
+                    android:id="@+id/tv_sc_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/outfit_regular"
+                    android:text="Placeholder Username"
+                    android:textColor="@color/text_d"
+                    android:textSize="24sp" />
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 
