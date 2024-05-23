@@ -1,5 +1,6 @@
 package me.gm.twaddle;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -23,6 +24,8 @@ public class DirectMessagesFragment extends Fragment {
     RecyclerView chats;
     FloatingActionButton btnNewChat;
 
+    View view;
+
     WSAPI wsApi = WSInstanceManager.getInstance();
 
     /**
@@ -33,12 +36,10 @@ public class DirectMessagesFragment extends Fragment {
     private void requestChatsReload(View v){
         wsApi.reqs()
                 .loadChats(WSInstanceManager.getUserData().userID())
-                .onResponse(pl -> {
-                    getActivity().runOnUiThread(() -> {
-                        DisplayChatAdapter adapter = new DisplayChatAdapter(v.getContext(), DisplayChat.fromPayload(pl));
-                        chats.setAdapter(adapter);
-                    });
-                })
+                .onResponse(pl -> ((Activity)view.getContext()).runOnUiThread(() -> {
+                    DisplayChatAdapter adapter = new DisplayChatAdapter(v.getContext(), DisplayChat.fromPayload(pl));
+                    chats.setAdapter(adapter);
+                }))
                 .send();
     }
 
@@ -53,7 +54,7 @@ public class DirectMessagesFragment extends Fragment {
      * @param savedInstanceState If non-null, this fragment is being re-constructed
      * from a previous saved state as given here.
      *
-     * @return
+     * @return the created view
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,6 +67,8 @@ public class DirectMessagesFragment extends Fragment {
         chats = v.findViewById(R.id.directs_chatsRecyclerView);
         chats.setLayoutManager(new LinearLayoutManager(v.getContext()));
         requestChatsReload(v);
+
+        view = v;
 
         // Initialise the Create Chat button and set the OnClick Listener
         btnNewChat = v.findViewById(R.id.btn_newChat);

@@ -1,5 +1,8 @@
 package me.gm.twaddle.obj;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * This class describes a single Twaddle user.
  */
@@ -14,6 +17,19 @@ public class User {
         this.firebaseUID = firebaseUID;
         this.displayName = displayName;
         this.userTag = userTag;
+    }
+
+    public static User fromJSONObject(JSONObject obj){
+        try {
+            return new User(
+                    obj.getLong("user_id"),
+                    obj.getString("firebase_id"),
+                    obj.getString("user_name"),
+                    obj.getString("user_tag")
+            );
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public long getUserID() {

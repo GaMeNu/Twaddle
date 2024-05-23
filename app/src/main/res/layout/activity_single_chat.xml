@@ -6,65 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".SingleChatActivity">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <EditText
-                    android:id="@+id/editTextText2"
-                    style="@style/EditText.Input"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10sp"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="Type your message here!"
-                    android:inputType="text|textCapSentences|textMultiLine"
-                    android:maxLines="4"
-                    android:minHeight="40sp" />
-
-                <Button
-                    android:id="@+id/sc_btnSend"
-                    style="@style/Button.Primary"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="10sp"
-                    app:icon="@drawable/baseline_send"
-                    app:iconGravity="top"
-                    app:iconPadding="16sp"
-                    app:iconSize="24sp"
-                    app:iconTint="@color/text_d" />
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -75,6 +24,15 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
+
+                <ImageButton
+                    android:id="@+id/sc_btnBack"
+                    style="@style/Button.Tertiary"
+                    android:layout_width="40sp"
+                    android:layout_height="40sp"
+                    android:layout_marginStart="10sp"
+                    android:layout_weight="0"
+                    app:srcCompat="@drawable/arrow_back" />
 
                 <ImageView
                     android:id="@+id/imageView5"
@@ -94,6 +52,54 @@
                     android:textSize="24sp" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </FrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/singleChat_messages"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:reverseLayout="false"
+            app:stackFromEnd="true" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <EditText
+                    android:id="@+id/sc_etMessage"
+                    style="@style/EditText.Input"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="Type your message here!"
+                    android:inputType="text|textCapSentences|textMultiLine"
+                    android:maxLines="4"
+                    android:minHeight="48sp"
+                    android:textSize="16sp" />
+
+                <ImageButton
+                    android:id="@+id/sc_btnSend"
+                    style="@style/Button.Primary"
+                    android:layout_width="48sp"
+                    android:layout_height="48sp"
+                    android:layout_margin="10sp"
+                    android:layout_weight="0"
+                    app:srcCompat="@drawable/baseline_send" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

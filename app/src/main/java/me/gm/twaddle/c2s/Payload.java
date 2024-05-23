@@ -8,14 +8,17 @@ public class Payload implements ToJSONObject {
     private short opcode;
     private JSONObject data;
 
+    /**
+     * This Enum stores all of the available ServerSide events
+     */
     public enum Events {
         CREATE_USER("CREATE_USER"),
         LOGIN_USER("LOGIN_USER"),
         LOAD_USER_CHATS("LOAD_USER_CHATS"),
         CREATE_USER_CHAT("CREATE_USER_CHAT"),
         REQUEST_MESSAGE_BATCH("REQUEST_MESSAGE_BATCH"),
-        SEND_MESSAGE("SEND_MESSAGE")
-        ;
+        SEND_CHAT_MESSAGE("SEND_CHAT_MESSAGE"),
+        LOAD_SINGLE_CHAT("LOAD_SINGLE_CHAT");
 
         private final String name;
 
@@ -28,7 +31,7 @@ public class Payload implements ToJSONObject {
         }
     }
 
-    public Payload(){};
+    public Payload(){}
 
     public Payload(short opcode) {
         this.opcode = opcode;
@@ -41,6 +44,10 @@ public class Payload implements ToJSONObject {
 
     public JSONObject getData(){
         return this.data;
+    }
+
+    public short getOpcode() {
+        return opcode;
     }
 
     public Payload(int opcode, JSONObject data) {

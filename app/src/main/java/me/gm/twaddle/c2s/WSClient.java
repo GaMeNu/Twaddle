@@ -68,42 +68,93 @@ public class WSClient extends WebSocketClient {
         }
     }
 
-    public void addOpenHandler(String name, Consumer<ServerHandshake> fn) {
-        onOpenHandlers.put(name ,fn);
+    /**
+     * Add a new onOpen handler that will run when a connection is opened.
+     * Can be removed with {@code WSClient.removeOpenHandler}
+     * @param id Handler ID
+     * @param fn Handler function
+     */
+    public void addOpenHandler(String id, Consumer<ServerHandshake> fn) {
+        onOpenHandlers.put(id ,fn);
     }
 
-    public void addMessageHandler(String name, Consumer<String> fn) {
-        onMessageHandlers.put(name, fn);
+    /**
+     * Add a new onMessage handler that will run when a message is received.
+     * Can be removed with {@code WSClient.removeMessageHandler}
+     * @param id Handler ID
+     * @param fn Handler function
+     */
+    public void addMessageHandler(String id, Consumer<String> fn) {
+        onMessageHandlers.put(id, fn);
     }
 
-    public void addCloseHandler(String name, Consumer<CloseEvent> fn) {
-        onCloseHandlers.put(name, fn);
+    /**
+     * Add a new onClose handler that will run when a connection is closed.
+     * Can be removed with {@code WSClient.removeCloseHandler}
+     * @param id Handler ID
+     * @param fn Handler function
+     */
+    public void addCloseHandler(String id, Consumer<CloseEvent> fn) {
+        onCloseHandlers.put(id, fn);
     }
 
-    public void addErrorHandler(String name, Consumer<Exception> fn) {
-        onErrorHandlers.put(name, fn);
+    /**
+     * Add a new onError handler that will run when an error occurs.
+     * Can be removed with {@code WSClient.removeErrorHandler}
+     * @param id Handler ID
+     * @param fn Handler function
+     */
+    public void addErrorHandler(String id, Consumer<Exception> fn) {
+        onErrorHandlers.put(id, fn);
     }
 
-    public void removeOpenHandler(String name){
-        onOpenHandlers.remove(name);
+    /**
+     * Remove an existing onOpen handler.
+     * Handlers can be removed with {@code WSClient.addOpenHandler}
+     * @param id Handler ID
+     */
+    public void removeOpenHandler(String id){
+        onOpenHandlers.remove(id);
     }
 
-    public void removeMessageHandler(String name){
-        onMessageHandlers.remove(name);
+    /**
+     * Remove an existing onMessage handler.
+     * Handlers can be removed with {@code WSClient.addMessageHandler}
+     * @param id Handler ID
+     */
+    public void removeMessageHandler(String id){
+        onMessageHandlers.remove(id);
     }
 
-    public void removeCloseHandler(String name){
-        onCloseHandlers.remove(name);
+    /**
+     * Remove an existing onClose handler.
+     * Handlers can be removed with {@code WSClient.addCloseHandler}
+     * @param id Handler ID
+     */
+    public void removeCloseHandler(String id){
+        onCloseHandlers.remove(id);
     }
 
-    public void removeErrorHandler(String name){
-        onErrorHandlers.remove(name);
+    /**
+     * Remove an existing onError handler.
+     * Handlers can be removed with {@code WSClient.addErrorHandler}
+     * @param id Handler ID
+     */
+    public void removeErrorHandler(String id){
+        onErrorHandlers.remove(id);
     }
 
+    /**
+     * Send a {@link Payload} message to the WebSocket Server
+     * @param pl Payload to send
+     */
     public void sendPayload(Payload pl) {
         this.send(pl.serialize().toString().getBytes(StandardCharsets.UTF_8));
     }
 
+    /**
+     * This embodies a WebSocket close event
+     */
     public static class CloseEvent {
         int code;
         String reason;

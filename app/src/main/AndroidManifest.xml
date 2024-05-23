@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Twaddle"
         tools:targetApi="31">
         <activity
+            android:name=".MessagesItemActivity"
+            android:exported="false" />
+        <activity
             android:name=".NewChatActivity"
             android:exported="false" />
         <activity

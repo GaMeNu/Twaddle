@@ -7,8 +7,6 @@ import me.gm.twaddle.c2s.ToJSONObject;
 
 public class SendableMessage implements ToJSONObject {
     long chatID;
-    long authorID;
-    long timeSent;
     String content;
 
     public long getChatID() {
@@ -17,24 +15,6 @@ public class SendableMessage implements ToJSONObject {
 
     public SendableMessage setChatID(long chatID) {
         this.chatID = chatID;
-        return this;
-    }
-
-    public long getAuthorID() {
-        return authorID;
-    }
-
-    public SendableMessage setAuthorID(long authorID) {
-        this.authorID = authorID;
-        return this;
-    }
-
-    public long getTimeSent() {
-        return timeSent;
-    }
-
-    public SendableMessage setTimeSent(long timeSent) {
-        this.timeSent = timeSent;
         return this;
     }
 
@@ -52,8 +32,6 @@ public class SendableMessage implements ToJSONObject {
         try {
             return new JSONObject()
                     .put("chat_id", chatID)
-                    .put("author_id", authorID)
-                    .put("time_sent", timeSent)
                     .put("content", content);
         } catch (JSONException e) {
             throw new RuntimeException(e);

@@ -69,9 +69,7 @@ public class HomeActivity extends AppCompatActivity {
                             "The app requires an active internet connection.\n" +
                             "It also requires a WebSocket connection to the Twaddle Server.\n" +
                             "Please try again once you have both available.")
-                    .setPositiveButton("Okay", (dialogInterface, i) -> {
-                        finishAffinity();
-                    })
+                    .setPositiveButton("Okay", (dialogInterface, i) -> finishAffinity())
                     .show();
             } else {
                 Log.e(TAG, "WebSocket Error:", e);
@@ -80,6 +78,7 @@ public class HomeActivity extends AppCompatActivity {
 
         wsApi.getClient().addOpenHandler("oo_home_setConnected", serverHandshake -> {
             isConnected = true;
+            wsApi.getClient().removeOpenHandler("oo_home_setConnected");
 
             if (getIntent().getBooleanExtra("register_new", false)){
 
@@ -107,10 +106,6 @@ public class HomeActivity extends AppCompatActivity {
                     .firebaseID(mAuth.getUid())
                     .username(displayName)
                     .userTag(tag);
-
-
-
-            wsApi.getClient().removeOpenHandler("oo_home_setConnected");
         });
 
         WSInstanceManager.setInstance(wsApi);
@@ -144,6 +139,12 @@ public class HomeActivity extends AppCompatActivity {
             }
         };
         getOnBackPressedDispatcher().addCallback(backPressedCallback);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!getSupportActionBar().isShowing()) getSupportActionBar().show();
     }
 
     public WSAPI getWsApi() {
@@ -209,13 +210,14 @@ public class HomeActivity extends AppCompatActivity {
 
     private void setAuthCreds(Payload pl){
         int userID = 0;
-        String userTag, userName;
+        String userTag, userName, firebaseID;
 
         Log.i("HOME", pl.getData().toString());
         try {
             JSONObject userData = pl.getData().getJSONObject("data");
 
             userID = userData.getInt("user_id");
+            firebaseID = userData.getString("firebase_id");
             userTag = userData.getString("user_tag");
             userName = userData.getString("user_name");
         } catch (JSONException e) {
@@ -232,6 +234,12 @@ public class HomeActivity extends AppCompatActivity {
                 .putString("tag", userTag)
                 .putString("username", userName)
                 .apply();
+
+        WSInstanceManager.getUserData()
+                .userID(userID)
+                .firebaseID(firebaseID)
+                .userTag(userTag)
+                .username(userName);
 
     }
 

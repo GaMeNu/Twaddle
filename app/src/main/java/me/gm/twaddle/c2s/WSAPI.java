@@ -2,6 +2,7 @@ package me.gm.twaddle.c2s;
 
 import android.util.Log;
 
+import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,8 +43,101 @@ public class WSAPI {
     }
 
     /**
+     * Wrapper for {@link WSClient#addOpenHandler(String, Consumer)}
+     * @see WSClient#addOpenHandler(String, Consumer)
+     */
+    public WSAPI addOpenHandler(String id, Consumer<ServerHandshake> fn){
+        getClient().addOpenHandler(id, fn);
+        return this;
+    }
+
+    /**
+     * Wrapper for {@link WSClient#addCloseHandler(String, Consumer)}
+     * @see WSClient#addCloseHandler(String, Consumer)
+     */
+    public WSAPI addCloseHandler(String id, Consumer<WSClient.CloseEvent> fn){
+        getClient().addCloseHandler(id, fn);
+        return this;
+    }
+
+    /**
+     * Wrapper for {@link WSClient#addMessageHandler(String, Consumer)}
+     * @see WSClient#addMessageHandler(String, Consumer)
+     */
+    public WSAPI addMessageHandler(String id, Consumer<String> fn){
+        getClient().addMessageHandler(id, fn);
+        return this;
+    }
+
+    /**
+     * Wrapper for {@link WSClient#addErrorHandler(String, Consumer)}
+     * @see WSClient#addErrorHandler(String, Consumer)
+     */
+    public WSAPI addErrorHandler(String id, Consumer<Exception> fn){
+        getClient().addErrorHandler(id, fn);
+        return this;
+    }
+
+    /**
+     * Wrapper for {@link WSClient#removeOpenHandler(String)}
+     * @see WSClient#removeOpenHandler(String)
+     */
+    public WSAPI removeOpenHandler(String id){
+        getClient().removeOpenHandler(id);
+        return this;
+    }
+
+    /**
+     * Wrapper for {@link WSClient#removeCloseHandler(String)}
+     * @see WSClient#removeCloseHandler(String)
+     */
+    public WSAPI removeCloseHandler(String id){
+        getClient().removeCloseHandler(id);
+        return this;
+    }
+
+    /**
+     * Wrapper for {@link WSClient#removeMessageHandler(String)}
+     * @see WSClient#removeMessageHandler(String)
+     */
+    public WSAPI removeMessageHandler(String id){
+        getClient().removeMessageHandler(id);
+        return this;
+    }
+
+    /**
+     * Wrapper for {@link WSClient#removeErrorHandler(String)}
+     * @see WSClient#removeErrorHandler(String)
+     */
+    public WSAPI removeErrorHandler(String id){
+        getClient().removeErrorHandler(id);
+        return this;
+    }
+
+    /**
+     * Adds a special type of a message handler.
+     * This handler will automatically convert the message to a {@link Payload}
+     * and run it
+     *
+     * @see Payload
+     * @see WSAPI#addOpenHandler(String, Consumer)
+     */
+    public WSAPI addPayloadHandler(String id, Consumer<Payload> fn){
+        getClient().addMessageHandler(id, s -> {
+            Payload pl;
+            try {
+                pl = Payload.fromString(s);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+            fn.accept(pl);
+        });
+        return this;
+    }
+
+    /**
      * Create a new Requests object
-     * @return ...the new Requests object.
+     * @return ...the new Requests object. What else?
      */
     public Requests reqs(){
         return new Requests();
@@ -202,11 +296,23 @@ public class WSAPI {
             return this;
         }
 
-        public Requests sendTextMsg(SendableMessage msg){
+        public Requests loadSingleChat(long chatID){
+            try {
+                JSONObject data = new JSONObject()
+                        .put("chat_id", chatID);
+                pendingPayload = Payload.event(Payload.Events.LOAD_SINGLE_CHAT, data);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+            return this;
+        }
+
+        public Requests sendChatMsg(SendableMessage msg){
             JSONObject data = msg.serialize();
 
+
             try {
-                pendingPayload = Payload.event(Payload.Events.SEND_MESSAGE, data);
+                pendingPayload = Payload.event(Payload.Events.SEND_CHAT_MESSAGE, data);
 
             } catch (JSONException e) {
                 throw new RuntimeException(e);

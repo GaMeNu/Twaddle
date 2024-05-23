@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.util.Log;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,8 +18,6 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
-import me.gm.twaddle.obj.Message;
 
 public class DisplayChatAdapter extends RecyclerView.Adapter<DisplayChatAdapter.DisplayChatViewHolder> {
 
@@ -68,23 +66,31 @@ public class DisplayChatAdapter extends RecyclerView.Adapter<DisplayChatAdapter.
 
         return new DisplayChatViewHolder(view);
     }
+
     @Override
     public void onBindViewHolder(@NonNull DisplayChatViewHolder holder, int position) {
+        // Get current chat
         DisplayChat chat = objs.get(position);
 
-        holder.timeLastMsg.setText(LocalDateTime.ofEpochSecond(chat.getTimeLastMsg(), 0, defaultOffset)
+        // Set last active time
+        holder.timeLastMsg
+                .setText(LocalDateTime.ofEpochSecond(chat.getTimeLastMsg(), 0, defaultOffset)
                 .format(formatter));
-        Log.i("CHATS_ADAPTER", "User locale: " + formatter.getLocale());
-        Log.i("CHATS_ADAPTER", "TIME: " + chat.getTimeLastMsg());
+
+        // Set chat name
         holder.dispName.setText(chat.getName());
-        holder.msgPreview.setText(Message.fromID(chat.getLastMessage()).getContent());
-        if (chat.getUnreads() < 99)
+
+        // Set unreads (if over 99, set to 99+)
+        if (chat.getUnreads() <= 99)
             holder.unreadBubble.setText("" + chat.getUnreads());
         else
             holder.unreadBubble.setText("99+");
+
+        // Set whether the unreads bubble should be visible
         if (chat.unreads > 0) holder.unreadBubble.setVisibility(View.VISIBLE);
         else holder.unreadBubble.setVisibility(View.GONE);
 
+        // Set the last msg preview
         if (!chat.getLastMsgPreview().isEmpty()) {
             holder.msgPreview.setTextColor(Color.WHITE);
             holder.msgPreview.setText(chat.getLastMsgPreview());
@@ -94,18 +100,21 @@ public class DisplayChatAdapter extends RecyclerView.Adapter<DisplayChatAdapter.
             holder.msgPreview.setText("Nothing to see here... yet!");
         }
 
-        holder.itemView.setOnClickListener(view -> view.getContext().startActivity(
-                new Intent(view.getContext(), SingleChatActivity.class)
-                        .putExtra("chat_id", chat.getChatID())
-                        .putExtra("chat_name", chat.getName())
-        ));
+        // Set the On Click Listener for the view card
+        holder.itemView.setOnClickListener(view -> {
+            Bundle extras = new Bundle();
+            extras.putLong("chat_id", chat.getChatID());
+            extras.putString("chat_name", chat.getName());
+            Intent intent = new Intent(view.getContext(), SingleChatActivity.class);
+            intent.putExtras(extras);
+            view.getContext().startActivity(intent);
+        });
 
     }
 
 
     @Override
     public int getItemCount() {
-        Log.i("CHATS_ADAPTER", "Objs size: " + objs.size());
         return objs.size();
     }
 

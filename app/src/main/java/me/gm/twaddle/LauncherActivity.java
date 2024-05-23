@@ -22,13 +22,44 @@ import java.net.URI;
 
 import me.gm.twaddle.c2s.WSClient;
 
+/**
+ * This class defines the Launcher Activity that is the first that starts when the app is launched.
+ * <br><br>
+ * <h2>Class call order:</h2>
+ * <pre>
+ *      1. Instantiate class vars: FBAuth, User Credentials.
+ *      2. Ask the user for the WebSocket URI. If confirmed, proceed.
+ *     If denied, exit the app.
+ *      3. Create a new WebSocket Client, and give it an onOpen handler
+ *     (proceed), and an onException handler (Step -1).
+ *      4. When connected to the WebSocket, close the WebSocket and
+ *     remove the handlers. Proceed.
+ *      5. Instantiate a new UserData instance. This will be filled in
+ *     the HomeActivity.
+ *      6. Check whether we have login credentials saved. If we do,
+ *     proceed. If not, start the Login Activity with the ws_uri as
+ *     an extra.
+ *      7. If email or password are empty, go to step -2. Else,
+ *     proceed.
+ *      8. Attempt to log in via FBAuth. If successful, launch the Home
+ *     Activity with the ws_uri, Else, go to step -3.
+ * </pre>
+ * <br>
+ * <pre>
+ *      -1. Throw an error dialog to the user. On
+ *     confirmation/dismissal, exit the app.
+ *      -2. Credentials related error. Delegate to LoginActivity with
+ *     the available credentials and the startForLogin flag.
+ *      -3. FBAuth error. Check error type. If Network Error, go to
+ *     step -1. Else, go to step -2.
+ * </pre>
+ */
 public class LauncherActivity extends AppCompatActivity {
 
     String email, password;
     FirebaseAuth mAuth;
     EditText etWsUri;
     String wsUri;
-    boolean webSocketAvailable;
     private WSClient wsClient;
 
     @Override
@@ -40,21 +71,15 @@ public class LauncherActivity extends AppCompatActivity {
 
         String email, password;
 
-        SharedPreferences sp;
         mAuth = FirebaseAuth.getInstance();
 
+        SharedPreferences sp;
         sp = getSharedPreferences("authCreds", Context.MODE_PRIVATE);
         email = sp.getString("email", null);
         password = sp.getString("password", null);
 
         this.email = email;
         this.password = password;
-
-//        // Check if there's internet
-//        if (!NetworkUtils.hasActiveInternetConnection(LauncherActivity.this)){
-//            handleOfflineMode();
-//            return;
-//        }
 
         etWsUri = new EditText(LauncherActivity.this);
 

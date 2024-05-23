@@ -1,5 +1,8 @@
 package me.gm.twaddle.obj;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * This class describes a single Twaddle Message
  * Messages must have a chat and author assigned to them
@@ -19,8 +22,23 @@ public class Message {
         this.content = content;
     }
 
+    @Deprecated
     public static Message fromID(long messageID){
         return new Message(messageID, 1, 1, 1, "Placeholder Message");
+    }
+
+    public static Message fromJSONObject(JSONObject obj){
+        try {
+            return new Message(
+                    obj.getLong("message_id"),
+                    obj.getLong("chat_id"),
+                    obj.getLong("author_id"),
+                    obj.getLong("time_sent"),
+                    obj.getString("content")
+            );
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public long getMessageID() {
@@ -58,6 +76,7 @@ public class Message {
         this.timeSent = timeSent;
         return this;
     }
+
 
     public String getContent() {
         return content;
