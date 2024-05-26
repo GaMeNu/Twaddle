@@ -19,7 +19,7 @@
             android:id="@+id/chatsItem_constraintLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10sp">
+            android:padding="8sp">
 
             <ImageView
                 android:id="@+id/chatItem_profilePic"
@@ -50,7 +50,7 @@
                         android:layout_marginTop="0sp"
                         android:layout_weight="1"
                         android:fadingEdge="horizontal"
-                        android:fontFamily="@font/outfit_regular"
+                        android:fontFamily="@font/outfit_bold"
                         android:text="Username"
                         android:textSize="20sp" />
 

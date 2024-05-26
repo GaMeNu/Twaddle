@@ -94,11 +94,7 @@ public class HomeActivity extends AppCompatActivity {
 
             wsApi.reqs().loginUser(
                     mAuth.getUid()
-            ).onResponse(pl -> {
-                if (getSharedPreferences("authCreds", MODE_PRIVATE).getInt("user_id", 0) == 0){
-                    setAuthCreds(pl);
-                }
-            }).send();
+            ).onResponse(this::setAuthCreds).send();
 
 
             WSInstanceManager.getUserData()

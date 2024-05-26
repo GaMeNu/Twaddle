@@ -3,10 +3,12 @@ package me.gm.twaddle.obj;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import me.gm.twaddle.c2s.ToJSONObject;
+
 /**
  * This class describes a single Twaddle user.
  */
-public class User {
+public class User implements ToJSONObject {
     long userID;
     String firebaseUID;
     String displayName;
@@ -66,5 +68,18 @@ public class User {
     public User setUserTag(String userTag) {
         this.userTag = userTag;
         return this;
+    }
+
+    @Override
+    public JSONObject serialize() {
+        try {
+            return new JSONObject()
+                    .put("user_id", userID)
+                    .put("firebase_id", firebaseUID)
+                    .put("user_tag", userTag)
+                    .put("user_name", displayName);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

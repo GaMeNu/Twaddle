@@ -18,7 +18,8 @@ public class Payload implements ToJSONObject {
         CREATE_USER_CHAT("CREATE_USER_CHAT"),
         REQUEST_MESSAGE_BATCH("REQUEST_MESSAGE_BATCH"),
         SEND_CHAT_MESSAGE("SEND_CHAT_MESSAGE"),
-        LOAD_SINGLE_CHAT("LOAD_SINGLE_CHAT");
+        LOAD_SINGLE_CHAT("LOAD_SINGLE_CHAT"),
+        UPDATE_DETAILS("UPDATE_DETAILS");
 
         private final String name;
 

@@ -1,28 +1,37 @@
 package me.gm.twaddle;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.Arrays;
+
+import me.gm.twaddle.obj.SettingsItem;
+import me.gm.twaddle.rvextras.SettingsItemAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SettingsFragment extends Fragment {
 
-    Button btnLogout;
-
     TextView tvUsername;
     TextView tvUsertag;
+
+    RecyclerView rvSettings;
+
+    private static SettingsItem[] settingsArray = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,20 +40,51 @@ public class SettingsFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_settings, container, false);
 
-        btnLogout = v.findViewById(R.id.btn_logOut);
-        btnLogout.setOnClickListener(this::onClick_logout);
-
         tvUsername = v.findViewById(R.id.tv_settings_username);
         tvUsertag = v.findViewById(R.id.tv_settings_usertag);
 
         tvUsername.setText(WSInstanceManager.getUserData().username());
         tvUsertag.setText("@" + WSInstanceManager.getUserData().userTag());
+
+        rvSettings = v.findViewById(R.id.settings_rvList);
+
+        if (settingsArray == null) createSettingsArray(v);
+
+        rvSettings.setAdapter(new SettingsItemAdapter(v.getContext(), Arrays.asList(settingsArray)));
+
+        rvSettings.setLayoutManager(new LinearLayoutManager(v.getContext()));
         
         return v;
     }
 
-    private void onClick_logout(View view) {
-        if (view.getId() != R.id.btn_logOut) return;
+    private void createSettingsArray(View v) {
+
+        settingsArray = new SettingsItem[]{
+                new SettingsItem(
+                        "Edit Profile",
+                        R.drawable.baseline_person,
+                        view -> {
+                            Intent intent = new Intent(v.getContext(), EditProfileActivity.class);
+                            v.getContext().startActivity(intent);
+                        }
+                ),
+                new SettingsItem(
+                        "Log Out",
+                        R.drawable.baseline_logout_24,
+                        view -> {
+                            new AlertDialog.Builder(view.getContext())
+                                    .setTitle("Are you sure you want to log out?")
+                                    .setPositiveButton("Yes", (dialogInterface, i) -> performLogout(view))
+                                    .setNegativeButton("No", ((dialogInterface, i) -> dialogInterface.dismiss()))
+                                    .show();
+                        }
+                )
+        };
+
+    }
+
+
+    private void performLogout(View view){
         SharedPreferences sp = getContext().getSharedPreferences("authCreds", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.remove("email")
@@ -54,7 +94,9 @@ public class SettingsFragment extends Fragment {
 
         Log.i("SETTINGS", sp.getAll().toString());
 
-        startActivity(new Intent(getActivity(), LoginActivity.class));
-        getActivity().finishAffinity();
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        intent.putExtra("ws_uri", WSInstanceManager.getInstance().getClient().getURI().toString());
+        startActivity(intent);
+        ((Activity)view.getContext()).finishAffinity();
     }
 }

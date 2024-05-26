@@ -1,4 +1,4 @@
-package me.gm.twaddle;
+package me.gm.twaddle.rvextras;
 
 import android.app.Activity;
 import android.content.Context;
@@ -18,6 +18,10 @@ import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import me.gm.twaddle.LoginActivity;
+import me.gm.twaddle.R;
+import me.gm.twaddle.obj.DisplayChat;
 
 public class DisplayChatAdapter extends RecyclerView.Adapter<DisplayChatAdapter.DisplayChatViewHolder> {
 
@@ -45,7 +49,6 @@ public class DisplayChatAdapter extends RecyclerView.Adapter<DisplayChatAdapter.
     List<DisplayChat> objs;
 
     DateTimeFormatter  formatter;
-
     ZoneOffset defaultOffset;
 
     public DisplayChatAdapter(@NonNull Context context, @NonNull List<DisplayChat> objects) {
@@ -87,7 +90,7 @@ public class DisplayChatAdapter extends RecyclerView.Adapter<DisplayChatAdapter.
             holder.unreadBubble.setText("99+");
 
         // Set whether the unreads bubble should be visible
-        if (chat.unreads > 0) holder.unreadBubble.setVisibility(View.VISIBLE);
+        if (chat.getUnreads() > 0) holder.unreadBubble.setVisibility(View.VISIBLE);
         else holder.unreadBubble.setVisibility(View.GONE);
 
         // Set the last msg preview
@@ -105,7 +108,7 @@ public class DisplayChatAdapter extends RecyclerView.Adapter<DisplayChatAdapter.
             Bundle extras = new Bundle();
             extras.putLong("chat_id", chat.getChatID());
             extras.putString("chat_name", chat.getName());
-            Intent intent = new Intent(view.getContext(), SingleChatActivity.class);
+            Intent intent = new Intent(view.getContext(), LoginActivity.SingleChatActivity.class);
             intent.putExtras(extras);
             view.getContext().startActivity(intent);
         });

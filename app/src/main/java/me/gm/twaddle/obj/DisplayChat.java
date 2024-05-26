@@ -1,4 +1,4 @@
-package me.gm.twaddle;
+package me.gm.twaddle.obj;
 
 import org.json.JSONArray;
 import org.json.JSONException;

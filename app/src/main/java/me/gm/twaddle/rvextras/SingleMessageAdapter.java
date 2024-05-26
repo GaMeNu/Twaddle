@@ -1,4 +1,4 @@
-package me.gm.twaddle;
+package me.gm.twaddle.rvextras;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
+import me.gm.twaddle.R;
 import me.gm.twaddle.obj.Message;
 import me.gm.twaddle.obj.User;
 

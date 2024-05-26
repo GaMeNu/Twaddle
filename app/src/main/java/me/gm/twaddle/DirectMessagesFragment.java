@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import me.gm.twaddle.c2s.WSAPI;
+import me.gm.twaddle.obj.DisplayChat;
+import me.gm.twaddle.rvextras.DisplayChatAdapter;
 
 /**
  * A simple {@link Fragment} subclass.

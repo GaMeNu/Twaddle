@@ -12,6 +12,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
 import me.gm.twaddle.SendableMessage;
+import me.gm.twaddle.obj.User;
 
 /**
  * This is the primary class for interacting with the WebServer.
@@ -136,7 +137,10 @@ public class WSAPI {
     }
 
     /**
-     * Create a new Requests object
+     * Create a new Requests object.<br>
+     * This object acts like a builder.<br>
+     * Specify the request, the onResponse consumer, and use Requests.send() to send the request.
+     *
      * @return ...the new Requests object. What else?
      */
     public Requests reqs(){
@@ -281,6 +285,12 @@ public class WSAPI {
             return this;
         }
 
+        /**
+         * Load all of the user's chats.
+         * @param userID user ID to load chats of. This should probably be updated to a newer version that doesn't take in a user ID.
+         *               As users can fake their own IDs, and visit others' messages.
+         * @return this
+         */
         public Requests loadChats(int userID){
             try {
                 JSONObject data = new JSONObject()
@@ -296,6 +306,11 @@ public class WSAPI {
             return this;
         }
 
+        /**
+         * Load all messages in a single chat. Should probably be updated to load in batches, to optimize loading times.
+         * @param chatID chat ID to load.
+         * @return this
+         */
         public Requests loadSingleChat(long chatID){
             try {
                 JSONObject data = new JSONObject()
@@ -307,6 +322,11 @@ public class WSAPI {
             return this;
         }
 
+        /**
+         * Send a chat message in a chat.
+         * @param msg Message to send.
+         * @return this
+         */
         public Requests sendChatMsg(SendableMessage msg){
             JSONObject data = msg.serialize();
 
@@ -314,6 +334,23 @@ public class WSAPI {
             try {
                 pendingPayload = Payload.event(Payload.Events.SEND_CHAT_MESSAGE, data);
 
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+
+            return this;
+        }
+
+        /**
+         * Update a user's details.
+         * @param user container for new details
+         * @return this
+         */
+        public Requests updateDetails(User user){
+            JSONObject data = user.serialize();
+
+            try {
+                pendingPayload = Payload.event(Payload.Events.UPDATE_DETAILS, data);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }

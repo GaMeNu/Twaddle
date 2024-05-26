@@ -31,8 +31,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8sp"
-            android:layout_marginTop="8sp"
             android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView4"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -44,6 +44,10 @@
                 android:text="TextView"
                 android:textSize="24sp" />
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="8sp" />
+
             <TextView
                 android:id="@+id/tv_settings_usertag"
                 android:layout_width="wrap_content"
@@ -53,21 +57,17 @@
                 android:textSize="16sp" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_logOut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8sp"
-            android:layout_marginBottom="8dp"
-            android:backgroundTint="@color/secondary_d"
-            android:drawableEnd="@drawable/baseline_logout_24"
-            android:drawableTint="@color/text_d"
-            android:fontFamily="@font/outfit_regular"
-            android:text="Log Out"
-            android:textColor="@color/text_d"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/imageView4" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/settings_rvList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

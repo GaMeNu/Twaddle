@@ -1,9 +1,13 @@
 package me.gm.twaddle;
 
 import me.gm.twaddle.c2s.WSAPI;
+import me.gm.twaddle.obj.User;
 
 public class WSInstanceManager {
 
+    /**
+     * Container class for the data of a logged in user.
+     */
     public static class UserData {
         private int userID;
         private String firebaseID;
@@ -58,6 +62,23 @@ public class WSInstanceManager {
         public UserData userTag(String userTag) {
             this.userTag = userTag;
             return this;
+        }
+
+        public User toUser(){
+            return new User(userID, firebaseID, username, userTag());
+        }
+
+        public static UserData fromUser(User user){
+            UserData ud = new UserData(
+                    (int) user.getUserID(),
+                    user.getFirebaseUID(),
+                    user.getDisplayName(),
+                    user.getUserTag()
+            );
+
+            WSInstanceManager.setUserData(ud);
+
+            return ud;
         }
     }
 
