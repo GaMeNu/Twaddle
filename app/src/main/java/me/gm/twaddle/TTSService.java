@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -25,10 +26,14 @@ public class TTSService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         text = intent.getStringExtra("tts");
+        Log.i("TTS", text);
         tts = new TextToSpeech(getApplicationContext(), status -> {
-            tts.setLanguage(Locale.ENGLISH);
-            if (status != TextToSpeech.ERROR)
+            Log.i("TTS", "Status: " + status);
+            if (status == TextToSpeech.SUCCESS){
+                tts.setLanguage(Locale.ENGLISH);
                 tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, null);
+                Log.i("TTS", text);
+            }
         });
         return START_STICKY;
     }

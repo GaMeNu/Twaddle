@@ -27,7 +27,7 @@
         android:layout_margin="8sp"
         android:digits="abcdefghijklmnopqrstuvwxyz0123456789._"
         android:ems="10"
-        android:hint="Usertag"
+        android:hint="New Usertag"
         android:inputType="text"
         android:minWidth="32sp"
         android:minHeight="32sp"

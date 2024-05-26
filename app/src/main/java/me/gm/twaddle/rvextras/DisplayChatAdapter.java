@@ -19,8 +19,8 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import me.gm.twaddle.LoginActivity;
 import me.gm.twaddle.R;
+import me.gm.twaddle.SingleChatActivity;
 import me.gm.twaddle.obj.DisplayChat;
 
 public class DisplayChatAdapter extends RecyclerView.Adapter<DisplayChatAdapter.DisplayChatViewHolder> {
@@ -108,7 +108,7 @@ public class DisplayChatAdapter extends RecyclerView.Adapter<DisplayChatAdapter.
             Bundle extras = new Bundle();
             extras.putLong("chat_id", chat.getChatID());
             extras.putString("chat_name", chat.getName());
-            Intent intent = new Intent(view.getContext(), LoginActivity.SingleChatActivity.class);
+            Intent intent = new Intent(view.getContext(), SingleChatActivity.class);
             intent.putExtras(extras);
             view.getContext().startActivity(intent);
         });

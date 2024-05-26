@@ -19,7 +19,7 @@
             android:name=".NewChatActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity$SingleChatActivity"
+            android:name=".SingleChatActivity"
             android:exported="false" />
         <activity
             android:name=".HomeActivity"
@@ -49,6 +49,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".TTSService"/>
     </application>
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE"/>
+        </intent>
+    </queries>
 
 </manifest>

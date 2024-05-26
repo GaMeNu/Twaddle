@@ -107,7 +107,7 @@ public class EditProfileActivity extends AppCompatActivity {
                     WSInstanceManager.setUserData(WSInstanceManager.UserData.fromUser(newUser));
                     runOnUiThread(() -> {
                         tvUsername.setText(WSInstanceManager.getUserData().username());
-                        tvUsertag.setText(WSInstanceManager.getUserData().userTag());
+                        tvUsertag.setText("@"+WSInstanceManager.getUserData().userTag());
                         dialogInterface.cancel();
                     });
                 }).send();

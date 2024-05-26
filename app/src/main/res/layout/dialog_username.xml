@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8sp"
         android:ems="10"
-        android:hint="Username"
+        android:hint="New Username"
         android:inputType="text"
         android:minWidth="32sp"
         android:minHeight="32sp"

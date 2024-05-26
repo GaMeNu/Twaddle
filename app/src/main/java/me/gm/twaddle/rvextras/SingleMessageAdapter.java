@@ -2,6 +2,7 @@ package me.gm.twaddle.rvextras;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import me.gm.twaddle.R;
+import me.gm.twaddle.TTSService;
 import me.gm.twaddle.obj.Message;
 import me.gm.twaddle.obj.User;
 
@@ -45,13 +47,6 @@ public class SingleMessageAdapter extends RecyclerView.Adapter<SingleMessageAdap
     ZoneOffset defaultOffset;
 
     Map<Long, User> userMap;
-    public SingleMessageAdapter(){
-        this.ctx = null;
-        this.objs = null;
-        this.userMap = null;
-        this.formatter = DateTimeFormatter.ofPattern("HH:mm");
-        this.defaultOffset = ZoneOffset.ofTotalSeconds(ZonedDateTime.now().getOffset().getTotalSeconds());
-    }
 
     public SingleMessageAdapter(@NonNull Context ctx, @NonNull List<Message> objs) {
         this.ctx = ctx;
@@ -95,6 +90,14 @@ public class SingleMessageAdapter extends RecyclerView.Adapter<SingleMessageAdap
                 holder.pfp.setVisibility(View.GONE);
             }
         }
+
+        holder.itemView.setOnLongClickListener(view -> {
+            String textToRead = holder.content.getText().toString();
+            Intent serviceIntent = new Intent(ctx, TTSService.class);
+            serviceIntent.putExtra("tts", textToRead);
+            ctx.startService(serviceIntent);
+            return true;
+        });
 
     }
 

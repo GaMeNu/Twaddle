@@ -43,8 +43,7 @@ public class SettingsFragment extends Fragment {
         tvUsername = v.findViewById(R.id.tv_settings_username);
         tvUsertag = v.findViewById(R.id.tv_settings_usertag);
 
-        tvUsername.setText(WSInstanceManager.getUserData().username());
-        tvUsertag.setText("@" + WSInstanceManager.getUserData().userTag());
+        updateUserDetails();
 
         rvSettings = v.findViewById(R.id.settings_rvList);
 
@@ -55,6 +54,17 @@ public class SettingsFragment extends Fragment {
         rvSettings.setLayoutManager(new LinearLayoutManager(v.getContext()));
         
         return v;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUserDetails();
+    }
+
+    private void updateUserDetails(){
+        tvUsername.setText(WSInstanceManager.getUserData().username());
+        tvUsertag.setText("@"+WSInstanceManager.getUserData().userTag());
     }
 
     private void createSettingsArray(View v) {
