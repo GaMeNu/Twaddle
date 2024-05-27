@@ -12,5 +12,15 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">@color/background_accent_d</item>
         <!-- Customize your theme here. -->
+        <item name="alertDialogTheme">@style/Theme.AlertDialog</item>
+        <item name="alertDialogStyle">@style/Theme.AlertDialog</item>
+    </style>
+    
+    <style name="Theme.AlertDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="android:backgroundTint">@color/background_d</item>
+        <item name="android:editTextStyle">@style/EditText.Input</item>
+        <item name="android:fontFamily">@font/outfit_regular</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/Button.Primary</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/Button.Tertiary</item>
     </style>
 </resources>

@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.EditText;
@@ -54,7 +57,7 @@ import me.gm.twaddle.c2s.WSClient;
  *     step -1. Else, go to step -2.
  * </pre>
  */
-public class LauncherActivity extends AppCompatActivity {
+public class LauncherActivity extends BaseAppCompatActivity {
 
     String email, password;
     FirebaseAuth mAuth;
@@ -66,6 +69,8 @@ public class LauncherActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
+
+        // createNotificationChannel();
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
@@ -81,9 +86,9 @@ public class LauncherActivity extends AppCompatActivity {
         this.email = email;
         this.password = password;
 
-        etWsUri = new EditText(LauncherActivity.this);
+        etWsUri = new EditText(this, null, R.style.EditText_Input, R.style.EditText_Input);
 
-        new AlertDialog.Builder(LauncherActivity.this)
+        new AlertDialog.Builder(LauncherActivity.this, R.style.Theme_AlertDialog)
                 .setTitle("Please enter the server's WebSocket URI")
                 .setView(etWsUri)
                 .setPositiveButton("Confirm", this::onWSDialogPositive)
@@ -128,7 +133,7 @@ public class LauncherActivity extends AppCompatActivity {
     }
 
     private void handleOfflineMode() {
-        new AlertDialog.Builder(LauncherActivity.this)
+        new AlertDialog.Builder(LauncherActivity.this, R.style.Theme_AlertDialog)
                 .setTitle("Error: No Internet/WebSocket")
                 .setMessage(
                         "The app requires an active internet connection.\n" +
@@ -181,5 +186,19 @@ public class LauncherActivity extends AppCompatActivity {
                 .putExtra("email", email)
                 .putExtra("password", password)
                 .putExtra("ws_uri", wsUri));
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is not in the Support Library.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(com.google.android.gms.base.R.string.common_google_play_services_notification_channel_name);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(NotificationChannel.DEFAULT_CHANNEL_ID, name, importance);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this.
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }

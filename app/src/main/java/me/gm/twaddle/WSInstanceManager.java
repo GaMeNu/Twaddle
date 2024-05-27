@@ -1,5 +1,7 @@
 package me.gm.twaddle;
 
+import android.content.Context;
+
 import me.gm.twaddle.c2s.WSAPI;
 import me.gm.twaddle.obj.User;
 
@@ -89,8 +91,8 @@ public class WSInstanceManager {
         return wsapiInstance;
     }
 
-    public static WSAPI createInstance(String uri){
-        wsapiInstance = new WSAPI(uri);
+    public static WSAPI createInstance(String uri, Context ctx){
+        wsapiInstance = new WSAPI(uri, ctx);
         return wsapiInstance;
     }
 

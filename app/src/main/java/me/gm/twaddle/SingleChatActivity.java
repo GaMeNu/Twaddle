@@ -29,7 +29,7 @@ import me.gm.twaddle.obj.User;
 import me.gm.twaddle.rvextras.SingleMessageAdapter;
 
 
-public class SingleChatActivity extends AppCompatActivity {
+public class SingleChatActivity extends BaseAppCompatActivity {
 
     private long chatID;
     private TextView tvUsername;
@@ -68,7 +68,7 @@ public class SingleChatActivity extends AppCompatActivity {
 
         // Oopsie daisy! There was an error :(
         if (chatID == 0){
-            new AlertDialog.Builder(SingleChatActivity.this)
+            new AlertDialog.Builder(SingleChatActivity.this, R.style.Theme_AlertDialog)
                     .setTitle("Failed to load chat!")
                     .setOnDismissListener(dialogInterface -> finishAffinity())
                     .setPositiveButton("OK", (dialogInterface, i) -> finish())
@@ -91,7 +91,6 @@ public class SingleChatActivity extends AppCompatActivity {
 
         wsApi.addPayloadHandler("op_onMessage_singleChat", pl -> {
             if (pl.getOpcode() != ((short)2)) return;
-            Log.i("SINGLE_CHAT", pl.getData().toString());
             JSONObject data = pl.getData();
             Message msg = Message.fromJSONObject(data);
             appendMessage(msg);

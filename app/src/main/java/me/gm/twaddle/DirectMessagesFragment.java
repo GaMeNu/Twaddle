@@ -8,14 +8,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import org.json.JSONObject;
+
 import me.gm.twaddle.c2s.WSAPI;
 import me.gm.twaddle.obj.DisplayChat;
+import me.gm.twaddle.obj.Message;
 import me.gm.twaddle.rvextras.DisplayChatAdapter;
 
 /**
@@ -76,97 +80,11 @@ public class DirectMessagesFragment extends Fragment {
         btnNewChat = v.findViewById(R.id.btn_newChat);
         btnNewChat.setOnClickListener(this::onClick_btnNewChat);
 
-        /*
+        wsApi.addPayloadHandler("op_onMessage_directsFragment", pl -> {
+            if (pl.getOpcode() != ((short)2)) return;
+            requestChatsReload(v);
+        });
 
-        // Old testing code, please ignore.
-
-        DisplayChat[] arr = {
-                new DisplayChat(
-                        1,
-                        "Johnny Smith",
-                        0 ,
-                        1,
-                        "Hello",
-                        0L
-                ),
-                new DisplayChat(
-                        2,
-                        "Johnny John!",
-                        1 ,
-                        2,
-                        "Hello",
-                        1710921371L
-                ),
-                new DisplayChat(
-                        1272,
-                        "Exclamation mark.",
-                        100,
-                        5,
-                        "Hello",
-                        60L
-                ),
-                new DisplayChat(
-                        122,
-                        "Test",
-                        7,
-                        5,
-                        "Hello",
-                        60L
-                ),
-                new DisplayChat(
-                        72,
-                        "Test",
-                        69,
-                        5,
-                        "Hello",
-                        60L
-                ),
-                new DisplayChat(
-                        127,
-                        "Test",
-                        33,
-                        5,
-                        "Hello",
-                        60L
-                ),
-                new DisplayChat(
-                        65,
-                        "Test",
-                        420,
-                        5,
-                        "Hello",
-                        60L
-                ),
-                new DisplayChat(
-                        100,
-                        "Test",
-                        1,
-                        5,
-                        "Hello",
-                        60L
-                ),
-                new DisplayChat(
-                        69,
-                        "Test",
-                        17,
-                        5,
-                        "Hello",
-                        60L
-                ),
-                new DisplayChat(
-                        13,
-                        "Test",
-                        17,
-                        5,
-                        "Hello",
-                        60L
-                )
-
-        };
-
-        ArrayList<DisplayChat> objs = new ArrayList<>(Arrays.asList(arr));
-
-        */
         return v;
     }
 

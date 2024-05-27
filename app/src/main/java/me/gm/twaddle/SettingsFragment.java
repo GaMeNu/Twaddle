@@ -82,7 +82,7 @@ public class SettingsFragment extends Fragment {
                         "Log Out",
                         R.drawable.baseline_logout_24,
                         view -> {
-                            new AlertDialog.Builder(view.getContext())
+                            new AlertDialog.Builder(view.getContext(), R.style.Theme_AlertDialog)
                                     .setTitle("Are you sure you want to log out?")
                                     .setPositiveButton("Yes", (dialogInterface, i) -> performLogout(view))
                                     .setNegativeButton("No", ((dialogInterface, i) -> dialogInterface.dismiss()))

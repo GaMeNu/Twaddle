@@ -18,7 +18,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class RegisterStepTwoActivity extends AppCompatActivity {
+public class RegisterStepTwoActivity extends BaseAppCompatActivity {
 
     private EditText etEmail;
     private EditText etPassword;

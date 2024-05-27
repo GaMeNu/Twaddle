@@ -13,7 +13,7 @@ import me.gm.twaddle.c2s.Payload;
 import me.gm.twaddle.c2s.RespPayload;
 import me.gm.twaddle.c2s.WSAPI;
 
-public class NewChatActivity extends AppCompatActivity {
+public class NewChatActivity extends BaseAppCompatActivity {
 
     EditText addTag;
     Button newChat;

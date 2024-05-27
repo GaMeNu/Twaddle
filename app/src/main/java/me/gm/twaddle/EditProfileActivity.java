@@ -15,7 +15,7 @@ import org.json.JSONException;
 import me.gm.twaddle.c2s.WSAPI;
 import me.gm.twaddle.obj.User;
 
-public class EditProfileActivity extends AppCompatActivity {
+public class EditProfileActivity extends BaseAppCompatActivity {
 
     TextView tvUsername;
     TextView tvUsertag;
@@ -48,7 +48,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         lUsername.setOnClickListener(view -> {
             if (view.getId() != lUsername.getId()) return;
-            dialog = new AlertDialog.Builder(this)
+            dialog = new AlertDialog.Builder(this, R.style.Theme_AlertDialog)
                     .setView(R.layout.dialog_username)
                     .setPositiveButton("Confirm", this::onConfirm_updateDetails)
                     .setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel())
@@ -57,7 +57,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         lUsertag.setOnClickListener(view -> {
             if (view.getId() != lUsertag.getId()) return;
-            dialog = new AlertDialog.Builder(this)
+            dialog = new AlertDialog.Builder(this, R.style.Theme_AlertDialog)
                     .setView(R.layout.dialog_usertag)
                     .setPositiveButton("Confirm", this::onConfirm_updateDetails)
                     .setNegativeButton("Cancel", ((dialogInterface, i) -> dialogInterface.cancel()))

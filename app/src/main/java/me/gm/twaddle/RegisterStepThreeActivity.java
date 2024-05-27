@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import org.jetbrains.annotations.TestOnly;
 
-public class RegisterStepThreeActivity extends AppCompatActivity {
+public class RegisterStepThreeActivity extends BaseAppCompatActivity {
 
     private TextView errTitle;
     private TextView errDesc;

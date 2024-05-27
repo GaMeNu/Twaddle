@@ -3,13 +3,20 @@ package me.gm.twaddle;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ActivityManager;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -22,8 +29,11 @@ import org.json.JSONObject;
 
 import me.gm.twaddle.c2s.Payload;
 import me.gm.twaddle.c2s.WSAPI;
+import me.gm.twaddle.obj.Message;
 
-public class HomeActivity extends AppCompatActivity {
+import static android.Manifest.permission.POST_NOTIFICATIONS;
+
+public class HomeActivity extends BaseAppCompatActivity {
 
     private final String TAG = "HOME";
 
@@ -59,11 +69,11 @@ public class HomeActivity extends AppCompatActivity {
 
 
         Log.i(TAG, wsUri);
-        wsApi = new WSAPI(wsUri);
+        wsApi = new WSAPI(wsUri, this);
         wsApi.getClient().addErrorHandler("oe_homeActivity1", e -> {
             Log.i(TAG, "Successfully added Handler");
             if (e instanceof IllegalArgumentException){
-                new AlertDialog.Builder(HomeActivity.this)
+                new AlertDialog.Builder(HomeActivity.this, R.style.Theme_AlertDialog)
                     .setTitle("Error: No Internet/WebSocket")
                     .setMessage(
                             "The app requires an active internet connection.\n" +
@@ -135,6 +145,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         };
         getOnBackPressedDispatcher().addCallback(backPressedCallback);
+
     }
 
     @Override
@@ -187,7 +198,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void handleOnBackPressed(){
-        new AlertDialog.Builder(HomeActivity.this)
+        new AlertDialog.Builder(HomeActivity.this, R.style.Theme_AlertDialog)
                 .setTitle("Are you sure you want to quit?")
                 .setPositiveButton("Yes", this::onQuitDialogPositive)
                 .setNegativeButton("No",this::onQuitDialogNegative)

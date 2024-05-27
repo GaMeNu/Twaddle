@@ -3,6 +3,7 @@ package me.gm.twaddle.c2s;
 import android.util.Log;
 
 import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.exceptions.WebsocketNotConnectedException;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
@@ -150,6 +151,14 @@ public class WSClient extends WebSocketClient {
      */
     public void sendPayload(Payload pl) {
         this.send(pl.serialize().toString().getBytes(StandardCharsets.UTF_8));
+    }
+
+    @Override
+    public void send(byte[] data) {
+        if (!isOpen()){
+            throw new WebsocketNotConnectedException();
+        }
+        super.send(data);
     }
 
     /**

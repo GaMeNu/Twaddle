@@ -1,7 +1,16 @@
 package me.gm.twaddle.c2s;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
+import org.java_websocket.exceptions.WebsocketNotConnectedException;
 import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,7 +20,10 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
+import me.gm.twaddle.LauncherActivity;
+import me.gm.twaddle.R;
 import me.gm.twaddle.SendableMessage;
+import me.gm.twaddle.TwaddleApplication;
 import me.gm.twaddle.obj.User;
 
 /**
@@ -22,6 +34,9 @@ public class WSAPI {
     private static final String TAG = "WebSocket API";
 
     WSClient wsClient;
+    Context ctx;
+
+    URI uri;
 
     Queue<Payload> responseQueue;
 
@@ -30,8 +45,9 @@ public class WSAPI {
      * This should not be used! Use {@link me.gm.twaddle.WSInstanceManager} instead, so as to not overload the WebServer with connections.
      * @param uri WebSocket URI
      */
-    public WSAPI(String uri){
-        this.wsClient = new WSClient(URI.create(uri));
+    public WSAPI(String uri, Context ctx){
+        this.uri = URI.create(uri);
+        this.wsClient = new WSClient(this.uri);
         this.responseQueue = new LinkedBlockingQueue<>();
         wsClient.addMessageHandler("om_wsapiNewest", s -> {
             try {
@@ -41,7 +57,29 @@ public class WSAPI {
             }
         });
 
+        this.ctx = ctx;
+
+        wsClient.addCloseHandler("oc_restart", closeEvent -> restartApp());
+        wsClient.addErrorHandler("oe_restart", e -> {
+            if (e instanceof WebsocketNotConnectedException) restartApp();
+        });
+
     }
+
+    private void restartApp() {
+        ((Activity) ctx).runOnUiThread(() -> {
+            new AlertDialog.Builder(ctx, R.style.Theme_AlertDialog)
+                    .setTitle("Connection to the WebServer disrupted")
+                    .setMessage("The app will proceed to restart.")
+                    .setPositiveButton("Okay", (dialogInterface, i) -> {
+                        Intent intent = new Intent(((Activity)ctx).getApplicationContext(), LauncherActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        ((Activity) ctx).startActivity(intent);
+                    })
+                    .show();
+        });
+    }
+
 
     /**
      * Wrapper for {@link WSClient#addOpenHandler(String, Consumer)}
@@ -136,6 +174,15 @@ public class WSAPI {
         return this;
     }
 
+    public Context getContext() {
+        return ctx;
+    }
+
+    public WSAPI setContext(Context ctx) {
+        this.ctx = ctx;
+        return this;
+    }
+
     /**
      * Create a new Requests object.<br>
      * This object acts like a builder.<br>
@@ -169,7 +216,11 @@ public class WSAPI {
      * @param payload The payload to send.
      */
     public void sendPayload(Payload payload){
-        wsClient.sendPayload(payload);
+        try {
+            wsClient.sendPayload(payload);
+        } catch (WebsocketNotConnectedException e){
+            restartApp();
+        }
     }
 
     private static int reqsCounter = 0;
