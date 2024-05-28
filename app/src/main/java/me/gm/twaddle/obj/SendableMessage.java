@@ -1,9 +1,7 @@
-package me.gm.twaddle;
+package me.gm.twaddle.obj;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import me.gm.twaddle.c2s.ToJSONObject;
 
 public class SendableMessage implements ToJSONObject {
     long chatID;

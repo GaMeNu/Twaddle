@@ -1,4 +1,4 @@
-package me.gm.twaddle;
+package me.gm.twaddle.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,10 +14,11 @@ import android.widget.TextView;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+
+import me.gm.twaddle.R;
 
 public class LoginActivity extends BaseAppCompatActivity {
 

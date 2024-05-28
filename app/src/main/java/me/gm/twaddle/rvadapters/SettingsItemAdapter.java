@@ -1,4 +1,4 @@
-package me.gm.twaddle.rvextras;
+package me.gm.twaddle.rvadapters;
 
 import android.app.Activity;
 import android.content.Context;

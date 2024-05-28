@@ -1,6 +1,5 @@
-package me.gm.twaddle;
+package me.gm.twaddle.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.app.AlertDialog;
@@ -23,6 +22,8 @@ import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
 
+import me.gm.twaddle.R;
+import me.gm.twaddle.c2s.WSInstanceManager;
 import me.gm.twaddle.c2s.WSClient;
 
 /**

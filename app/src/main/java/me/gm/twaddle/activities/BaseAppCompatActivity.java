@@ -1,4 +1,4 @@
-package me.gm.twaddle;
+package me.gm.twaddle.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.os.PersistableBundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import me.gm.twaddle.etc.TwaddleApplication;
 
 public class BaseAppCompatActivity extends AppCompatActivity {
     private TwaddleApplication application;

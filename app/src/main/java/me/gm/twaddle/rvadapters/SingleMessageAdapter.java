@@ -1,4 +1,4 @@
-package me.gm.twaddle.rvextras;
+package me.gm.twaddle.rvadapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import me.gm.twaddle.R;
-import me.gm.twaddle.TTSService;
+import me.gm.twaddle.etc.TTSService;
 import me.gm.twaddle.obj.Message;
 import me.gm.twaddle.obj.User;
 

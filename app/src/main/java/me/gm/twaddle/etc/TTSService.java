@@ -1,4 +1,4 @@
-package me.gm.twaddle;
+package me.gm.twaddle.etc;
 
 import android.app.Service;
 import android.content.Intent;

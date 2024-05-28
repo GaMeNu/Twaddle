@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <application
-        android:name=".TwaddleApplication"
+        android:name=".etc.TwaddleApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -14,22 +14,22 @@
         android:theme="@style/Theme.Twaddle"
         tools:targetApi="31">
         <activity
-            android:name=".EditProfileActivity"
+            android:name=".activities.EditProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".NewChatActivity"
+            android:name=".activities.NewChatActivity"
             android:exported="false" />
         <activity
-            android:name=".SingleChatActivity"
+            android:name=".activities.SingleChatActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".activities.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterStepThreeActivity"
+            android:name=".activities.RegisterStepThreeActivity"
             android:exported="false" />
         <activity
-            android:name=".LauncherActivity"
+            android:name=".activities.LauncherActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,11 +38,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".RegisterStepTwoActivity"
+            android:name=".activities.RegisterStepTwoActivity"
             android:exported="false"
             android:theme="@style/Theme.Twaddle" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".activities.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,7 +50,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".TTSService"/>
+        <service android:name=".etc.TTSService"/>
     </application>
 
     <queries>

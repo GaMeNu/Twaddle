@@ -1,22 +1,14 @@
-package me.gm.twaddle;
+package me.gm.twaddle.activities;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.ActivityManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -27,11 +19,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import me.gm.twaddle.fragments.DirectMessagesFragment;
+import me.gm.twaddle.fragments.HomeFragment;
+import me.gm.twaddle.R;
+import me.gm.twaddle.fragments.ServersFragment;
+import me.gm.twaddle.fragments.SettingsFragment;
+import me.gm.twaddle.c2s.WSInstanceManager;
 import me.gm.twaddle.c2s.Payload;
 import me.gm.twaddle.c2s.WSAPI;
-import me.gm.twaddle.obj.Message;
-
-import static android.Manifest.permission.POST_NOTIFICATIONS;
 
 public class HomeActivity extends BaseAppCompatActivity {
 

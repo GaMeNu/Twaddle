@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_d"
-    tools:context=".RegisterStepTwoActivity">
+    tools:context=".activities.RegisterStepTwoActivity">
 
     <LinearLayout
         android:id="@+id/linearLayout5"

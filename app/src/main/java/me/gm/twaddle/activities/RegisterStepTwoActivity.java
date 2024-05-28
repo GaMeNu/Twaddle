@@ -1,9 +1,8 @@
-package me.gm.twaddle;
+package me.gm.twaddle.activities;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +16,8 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+
+import me.gm.twaddle.R;
 
 public class RegisterStepTwoActivity extends BaseAppCompatActivity {
 

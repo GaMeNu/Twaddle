@@ -1,4 +1,4 @@
-package me.gm.twaddle;
+package me.gm.twaddle.activities;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -9,7 +9,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,11 +21,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.gm.twaddle.R;
+import me.gm.twaddle.obj.SendableMessage;
+import me.gm.twaddle.c2s.WSInstanceManager;
 import me.gm.twaddle.c2s.RespPayload;
 import me.gm.twaddle.c2s.WSAPI;
 import me.gm.twaddle.obj.Message;
 import me.gm.twaddle.obj.User;
-import me.gm.twaddle.rvextras.SingleMessageAdapter;
+import me.gm.twaddle.rvadapters.SingleMessageAdapter;
 
 
 public class SingleChatActivity extends BaseAppCompatActivity {
@@ -101,6 +103,12 @@ public class SingleChatActivity extends BaseAppCompatActivity {
         btnSend.setOnClickListener(this::sendMessage);
 
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        wsApi.reqs().markAsRead(chatID).send();
     }
 
     private void appendMessage(Message msg){

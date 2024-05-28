@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_d"
-    tools:context=".DirectMessagesFragment">
+    tools:context=".fragments.DirectMessagesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/directs_chatsRecyclerView"

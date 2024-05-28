@@ -3,12 +3,9 @@ package me.gm.twaddle.c2s;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import org.java_websocket.exceptions.WebsocketNotConnectedException;
 import org.java_websocket.handshake.ServerHandshake;
@@ -20,10 +17,9 @@ import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.function.Consumer;
 
-import me.gm.twaddle.LauncherActivity;
+import me.gm.twaddle.activities.LauncherActivity;
 import me.gm.twaddle.R;
-import me.gm.twaddle.SendableMessage;
-import me.gm.twaddle.TwaddleApplication;
+import me.gm.twaddle.obj.SendableMessage;
 import me.gm.twaddle.obj.User;
 
 /**
@@ -42,7 +38,7 @@ public class WSAPI {
 
     /**
      * Instantiate a new API instance.
-     * This should not be used! Use {@link me.gm.twaddle.WSInstanceManager} instead, so as to not overload the WebServer with connections.
+     * This should not be used! Use {@link WSInstanceManager} instead, so as to not overload the WebServer with connections.
      * @param uri WebSocket URI
      */
     public WSAPI(String uri, Context ctx){
@@ -389,6 +385,21 @@ public class WSAPI {
                 throw new RuntimeException(e);
             }
 
+            return this;
+        }
+
+        /**
+         * Mark a single chat as read
+         * @param chatID chat to mark as read
+         * @return this
+         */
+        public Requests markAsRead(long chatID){
+            try {
+                JSONObject data = new JSONObject().put("chat_id", chatID);
+                pendingPayload = Payload.event(Payload.Events.MARK_AS_READ, data);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
             return this;
         }
 

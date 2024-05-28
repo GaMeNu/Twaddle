@@ -1,4 +1,4 @@
-package me.gm.twaddle;
+package me.gm.twaddle.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -18,8 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Arrays;
 
+import me.gm.twaddle.R;
+import me.gm.twaddle.c2s.WSInstanceManager;
+import me.gm.twaddle.activities.EditProfileActivity;
+import me.gm.twaddle.activities.LoginActivity;
 import me.gm.twaddle.obj.SettingsItem;
-import me.gm.twaddle.rvextras.SettingsItemAdapter;
+import me.gm.twaddle.rvadapters.SettingsItemAdapter;
 
 /**
  * A simple {@link Fragment} subclass.

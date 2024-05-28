@@ -1,4 +1,4 @@
-package me.gm.twaddle;
+package me.gm.twaddle.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,19 +8,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.json.JSONObject;
-
+import me.gm.twaddle.R;
+import me.gm.twaddle.c2s.WSInstanceManager;
+import me.gm.twaddle.activities.NewChatActivity;
 import me.gm.twaddle.c2s.WSAPI;
 import me.gm.twaddle.obj.DisplayChat;
-import me.gm.twaddle.obj.Message;
-import me.gm.twaddle.rvextras.DisplayChatAdapter;
+import me.gm.twaddle.rvadapters.DisplayChatAdapter;
 
 /**
  * A simple {@link Fragment} subclass.

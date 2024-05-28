@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background_d"
     android:padding="8sp"
-    tools:context=".NewChatActivity">
+    tools:context=".activities.NewChatActivity">
 
     <EditText
         android:id="@+id/et_nc_addTag"

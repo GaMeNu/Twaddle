@@ -1,8 +1,7 @@
-package me.gm.twaddle;
+package me.gm.twaddle.c2s;
 
 import android.content.Context;
 
-import me.gm.twaddle.c2s.WSAPI;
 import me.gm.twaddle.obj.User;
 
 public class WSInstanceManager {

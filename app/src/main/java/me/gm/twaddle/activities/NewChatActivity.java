@@ -1,6 +1,4 @@
-package me.gm.twaddle;
-
-import androidx.appcompat.app.AppCompatActivity;
+package me.gm.twaddle.activities;
 
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +7,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import me.gm.twaddle.R;
+import me.gm.twaddle.c2s.WSInstanceManager;
 import me.gm.twaddle.c2s.Payload;
 import me.gm.twaddle.c2s.RespPayload;
 import me.gm.twaddle.c2s.WSAPI;

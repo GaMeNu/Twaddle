@@ -1,4 +1,4 @@
-package me.gm.twaddle;
+package me.gm.twaddle.activities;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -8,10 +8,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import org.json.JSONException;
 
+import me.gm.twaddle.R;
+import me.gm.twaddle.c2s.WSInstanceManager;
 import me.gm.twaddle.c2s.WSAPI;
 import me.gm.twaddle.obj.User;
 

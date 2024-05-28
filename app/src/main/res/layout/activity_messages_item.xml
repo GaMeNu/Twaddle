@@ -41,6 +41,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/outfit_regular"
                 android:text="UsernamePerson"
+                android:textColor="@color/text_d"
                 android:textSize="24sp" />
 
             <TextView
@@ -50,6 +51,7 @@
                 android:layout_weight="0"
                 android:fontFamily="@font/outfit_light"
                 android:text="00:20"
+                android:textColor="@color/text_secondary_d"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -60,6 +62,7 @@
             android:layout_marginStart="32sp"
             android:layout_marginTop="8sp"
             android:text="Placeholder"
+            android:textColor="@color/text_d"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

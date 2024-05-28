@@ -1,4 +1,4 @@
-package me.gm.twaddle;
+package me.gm.twaddle.etc;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
