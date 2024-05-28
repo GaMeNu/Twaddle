@@ -21,6 +21,7 @@
         <item name="android:editTextStyle">@style/EditText.Input</item>
         <item name="android:fontFamily">@font/outfit_regular</item>
         <item name="android:buttonBarPositiveButtonStyle">@style/Button.Primary</item>
+        <item name="android:buttonBarNeutralButtonStyle">@style/Button.Secondary</item>
         <item name="android:buttonBarNegativeButtonStyle">@style/Button.Tertiary</item>
     </style>
 </resources>
