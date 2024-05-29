@@ -115,7 +115,8 @@ public class LoginActivity extends BaseAppCompatActivity {
         Intent intent = new Intent(this, RegisterStepTwoActivity.class);
         intent.putExtra("userEmail", etEmail.getText().toString())
                 .putExtra("userPassword", etPassword.getText().toString())
-                .putExtra("userRemember", rememberCreds.isChecked());
+                .putExtra("userRemember", rememberCreds.isChecked())
+                .putExtra("ws_uri", wsUri);
         activityResultLauncher.launch(intent);
     }
 

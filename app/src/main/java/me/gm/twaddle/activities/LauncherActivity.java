@@ -71,12 +71,14 @@ public class LauncherActivity extends BaseAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
 
-        // createNotificationChannel();
+        // createNotificationChannel()
 
+        // Too lazy to design a night mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
         String email, password;
 
+        // Set up FirebaseAuth
         mAuth = FirebaseAuth.getInstance();
 
         SharedPreferences sp;
@@ -130,7 +132,7 @@ public class LauncherActivity extends BaseAppCompatActivity {
     }
 
     private void onWSDialogNegative(DialogInterface dialogInterface, int i) {
-        finishAffinity();
+        handleOfflineMode();
     }
 
     private void handleOfflineMode() {

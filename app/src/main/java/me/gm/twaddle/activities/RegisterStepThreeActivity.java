@@ -4,12 +4,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import me.gm.twaddle.R;
+import me.gm.twaddle.c2s.Payload;
+import me.gm.twaddle.c2s.RespPayload;
+import me.gm.twaddle.c2s.WSAPI;
+import me.gm.twaddle.c2s.WSInstanceManager;
 
 public class RegisterStepThreeActivity extends BaseAppCompatActivity {
 
@@ -23,6 +34,11 @@ public class RegisterStepThreeActivity extends BaseAppCompatActivity {
     private EditText etTag;
 
     private String defaultUsername;
+    private String wsUri;
+    private WSAPI wsApi;
+
+    private String dispName;
+    private String tag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +47,10 @@ public class RegisterStepThreeActivity extends BaseAppCompatActivity {
 
         errTitle = findViewById(R.id.tv_errTitle_registerNames);
         errDesc = findViewById(R.id.tv_errDesc_registerNames);
+
+        wsApi = new WSAPI(getIntent().getStringExtra("ws_uri"), this);
+
+        wsApi.connect();
 
         btnConfirm = findViewById(R.id.btn_register_namesConfirm);
 
@@ -52,9 +72,11 @@ public class RegisterStepThreeActivity extends BaseAppCompatActivity {
 
     private void onClick_confirm(View view) {
         if (view.getId() == btnConfirm.getId()){
-            saveUsernames(etDisplayName.getText().toString(), etTag.getText().toString());
-            setResult(RESULT_OK);
-            finish();
+            dispName = etDisplayName.getText().toString();
+            tag = etTag.getText().toString();
+            saveUsernames(dispName, tag);
+            registerWS();
+
         }
     }
 
@@ -73,6 +95,63 @@ public class RegisterStepThreeActivity extends BaseAppCompatActivity {
         editor.putString("tag", tag);
         editor.apply();
     }
+
+    private void registerWS(){
+        SharedPreferences sp = getSharedPreferences("authCreds", MODE_PRIVATE);
+        Payload res = null;
+        wsApi.reqs().registerUser(
+                FirebaseAuth.getInstance().getUid(), tag, dispName
+        ).onResponse(this::setAuthCreds).send();
+    }
+
+    private void setAuthCreds(RespPayload pl){
+        int userID = 0;
+
+        if (!pl.isSuccessful()){
+            runOnUiThread(() -> {
+                Toast.makeText(this, "ServerSide error.", Toast.LENGTH_SHORT).show();
+            });
+        }
+
+        String userTag, userName, firebaseID;
+
+        Log.i("LOGIN3", pl.getData().toString());
+
+        try {
+            JSONObject userData = pl.getData().getJSONObject("data");
+
+            userID = userData.getInt("user_id");
+            firebaseID = userData.getString("firebase_id");
+            userTag = userData.getString("user_tag");
+            userName = userData.getString("user_name");
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (userID == 0){
+            Log.e("LOGIN3", "The server has failed me! We must abort the app!");
+            finishAffinity();
+        }
+
+        getSharedPreferences("authCreds", MODE_PRIVATE).edit()
+                .putInt("user_id", userID)
+                .putString("tag", userTag)
+                .putString("username", userName)
+                .apply();
+
+        WSInstanceManager.getUserData()
+                .userID(userID)
+                .firebaseID(firebaseID)
+                .userTag(userTag)
+                .username(userName);
+        runOnUiThread(() -> {
+            setResult(RESULT_OK);
+            finish();
+        });
+
+    }
+
+
 
 
 }

@@ -85,13 +85,11 @@ public class SettingsFragment extends Fragment {
                 new SettingsItem(
                         "Log Out",
                         R.drawable.baseline_logout_24,
-                        view -> {
-                            new AlertDialog.Builder(view.getContext(), R.style.Theme_AlertDialog)
-                                    .setTitle("Are you sure you want to log out?")
-                                    .setPositiveButton("Yes", (dialogInterface, i) -> performLogout(view))
-                                    .setNegativeButton("No", ((dialogInterface, i) -> dialogInterface.dismiss()))
-                                    .show();
-                        }
+                        view -> new AlertDialog.Builder(view.getContext(), R.style.Theme_AlertDialog)
+                                .setTitle("Are you sure you want to log out?")
+                                .setPositiveButton("Yes", (dialogInterface, i) -> performLogout(view))
+                                .setNegativeButton("No", ((dialogInterface, i) -> dialogInterface.dismiss()))
+                                .show()
                 )
         };
 
@@ -99,16 +97,18 @@ public class SettingsFragment extends Fragment {
 
 
     private void performLogout(View view){
-        SharedPreferences sp = getContext().getSharedPreferences("authCreds", Context.MODE_PRIVATE);
+        SharedPreferences sp = view.getContext().getSharedPreferences("authCreds", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.remove("email")
                 .remove("password")
-                .remove("user_id");
+                .remove("user_id")
+                .remove("username")
+                .remove("tag");
         editor.apply();
 
         Log.i("SETTINGS", sp.getAll().toString());
 
-        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        Intent intent = new Intent(view.getContext(), LoginActivity.class);
         intent.putExtra("ws_uri", WSInstanceManager.getInstance().getClient().getURI().toString());
         startActivity(intent);
         ((Activity)view.getContext()).finishAffinity();

@@ -36,6 +36,7 @@ public class RegisterStepTwoActivity extends BaseAppCompatActivity {
 
     private String email;
     private String password;
+    private String wsUri;
     private boolean remember;
 
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
@@ -69,6 +70,8 @@ public class RegisterStepTwoActivity extends BaseAppCompatActivity {
         etEmail.setText(getIntent().getStringExtra("userEmail"));
         etPassword.setText(getIntent().getStringExtra("userPassword"));
         rememberCreds.setChecked(getIntent().getBooleanExtra("userRemember", false));
+
+        wsUri = getIntent().getStringExtra("ws_uri");
 
 
     }
@@ -123,7 +126,8 @@ public class RegisterStepTwoActivity extends BaseAppCompatActivity {
 
         Intent usernameIntent = new Intent(RegisterStepTwoActivity.this, RegisterStepThreeActivity.class);
 
-        usernameIntent.putExtra("email", this.email);
+        usernameIntent.putExtra("email", this.email)
+                .putExtra("ws_uri", wsUri);
 
         activityResultLauncher.launch(usernameIntent);
     }

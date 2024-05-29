@@ -16,12 +16,23 @@
         <item name="alertDialogStyle">@style/Theme.AlertDialog</item>
     </style>
     
-    <style name="Theme.AlertDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+    <style name="Theme.AlertDialog" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="android:dialogTheme">@style/Theme.AlertDialog</item>
         <item name="android:backgroundTint">@color/background_d</item>
         <item name="android:editTextStyle">@style/EditText.Input</item>
         <item name="android:fontFamily">@font/outfit_regular</item>
         <item name="android:buttonBarPositiveButtonStyle">@style/Button.Primary</item>
         <item name="android:buttonBarNeutralButtonStyle">@style/Button.Secondary</item>
         <item name="android:buttonBarNegativeButtonStyle">@style/Button.Tertiary</item>
+
+
+        <item name="dialogTheme">@style/Theme.AlertDialog</item>
+        <item name="backgroundTint">@color/background_d</item>
+        <item name="backgroundColor">@color/background_d</item>
+        <item name="fontFamily">@font/outfit_regular</item>
+        <item name="editTextStyle">@style/EditText.Input</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Button.Primary</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Button.Secondary</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Button.Tertiary</item>
     </style>
 </resources>

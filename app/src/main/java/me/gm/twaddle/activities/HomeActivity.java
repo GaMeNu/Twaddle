@@ -1,6 +1,9 @@
 package me.gm.twaddle.activities;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,16 +19,17 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.java_websocket.handshake.ServerHandshake;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import me.gm.twaddle.c2s.RespPayload;
 import me.gm.twaddle.fragments.DirectMessagesFragment;
 import me.gm.twaddle.fragments.HomeFragment;
 import me.gm.twaddle.R;
 import me.gm.twaddle.fragments.ServersFragment;
 import me.gm.twaddle.fragments.SettingsFragment;
 import me.gm.twaddle.c2s.WSInstanceManager;
-import me.gm.twaddle.c2s.Payload;
 import me.gm.twaddle.c2s.WSAPI;
 
 public class HomeActivity extends BaseAppCompatActivity {
@@ -40,6 +44,13 @@ public class HomeActivity extends BaseAppCompatActivity {
     private String tag;
     private FirebaseAuth mAuth;
     private WSAPI wsApi;
+    private String wsUri;
+
+    private ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            this::onActivityResult
+    );
+
 
     BottomNavigationView bottomNavigationView;
 
@@ -60,11 +71,14 @@ public class HomeActivity extends BaseAppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        String wsUri = getIntent().getStringExtra("ws_uri");
-
+        wsUri = getIntent().getStringExtra("ws_uri");
 
         Log.i(TAG, wsUri);
+
+        // Create WSAPI
         wsApi = new WSAPI(wsUri, this);
+
+        // Add Error handler (if can't connect)
         wsApi.getClient().addErrorHandler("oe_homeActivity1", e -> {
             Log.i(TAG, "Successfully added Handler");
             if (e instanceof IllegalArgumentException){
@@ -81,38 +95,14 @@ public class HomeActivity extends BaseAppCompatActivity {
             }
         });
 
-        wsApi.getClient().addOpenHandler("oo_home_setConnected", serverHandshake -> {
-            isConnected = true;
-            wsApi.getClient().removeOpenHandler("oo_home_setConnected");
+        // Add open handler
+        wsApi.getClient().addOpenHandler("oo_home_setConnected", this::wsOnConnect);
 
-            if (getIntent().getBooleanExtra("register_new", false)){
-
-
-                SharedPreferences sp = getSharedPreferences("authCreds", MODE_PRIVATE);
-                Payload res = null;
-                wsApi.reqs().registerUser(
-                                getIntent().getStringExtra("uid"),
-                                sp.getString("tag", ""),
-                                sp.getString("username", "")
-                ).onResponse(this::setAuthCreds).send();
-            }
-
-            wsApi.reqs().loginUser(
-                    mAuth.getUid()
-            ).onResponse(this::setAuthCreds).send();
-
-
-            WSInstanceManager.getUserData()
-                    .userID(getSharedPreferences("authCreds", MODE_PRIVATE).getInt("user_id", 0))
-                    .firebaseID(mAuth.getUid())
-                    .username(displayName)
-                    .userTag(tag);
-        });
-
+        // Set public instance and connect
         WSInstanceManager.setInstance(wsApi);
-
         wsApi.connect();
 
+        // Instantiate fragments
         homeFragment = new HomeFragment();
         directMessagesFragment = new DirectMessagesFragment();
         serversFragment = new ServersFragment();
@@ -120,6 +110,7 @@ public class HomeActivity extends BaseAppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.home_bottomNavMenu);
 
+        // This should always be false.
         offlineMode = getIntent().getBooleanExtra("offlineMode", false);
 
         if (offlineMode){
@@ -128,10 +119,13 @@ public class HomeActivity extends BaseAppCompatActivity {
             updateDetailsFromServer();
         }
 
+        // Inflate the homeFragment
         getSupportFragmentManager().beginTransaction().replace(R.id.home_container,homeFragment).commit();
-        
+
+        // Set the navbar change listener
         bottomNavigationView.setOnItemSelectedListener(this::onNavbarItemSelect);
 
+        // Override default back button behavior to show exit app dialog
         OnBackPressedCallback backPressedCallback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
@@ -141,6 +135,21 @@ public class HomeActivity extends BaseAppCompatActivity {
         };
         getOnBackPressedDispatcher().addCallback(backPressedCallback);
 
+    }
+
+    private void wsOnConnect(ServerHandshake serverHandshake) {
+        isConnected = true;
+        wsApi.getClient().removeOpenHandler("oo_home_setConnected");
+
+        wsApi.reqs().loginUser(
+                mAuth.getUid()
+        ).onResponse(this::setAuthCreds).send();
+
+        WSInstanceManager.getUserData()
+                .userID(getSharedPreferences("authCreds", MODE_PRIVATE).getInt("user_id", 0))
+                .firebaseID(mAuth.getUid())
+                .username(displayName)
+                .userTag(tag);
     }
 
     @Override
@@ -210,8 +219,12 @@ public class HomeActivity extends BaseAppCompatActivity {
         finishAffinity();
     }
 
-    private void setAuthCreds(Payload pl){
+    private void setAuthCreds(RespPayload pl){
         int userID = 0;
+        if (!pl.isSuccessful()){
+            noAuth();
+            return;
+        }
         String userTag, userName, firebaseID;
 
         Log.i("HOME", pl.getData().toString());
@@ -243,6 +256,17 @@ public class HomeActivity extends BaseAppCompatActivity {
                 .userTag(userTag)
                 .username(userName);
 
+    }
+
+    private void noAuth(){
+        Intent intent = new Intent(HomeActivity.this, RegisterStepThreeActivity.class);
+        intent.putExtra("email", "@example.com")
+                .putExtra("ws_uri", wsUri);
+
+        activityResultLauncher.launch(intent);
+    }
+
+    private void onActivityResult(ActivityResult result) {
     }
 
     private void logoutUser(){
