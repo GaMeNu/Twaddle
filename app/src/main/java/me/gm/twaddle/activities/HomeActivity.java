@@ -71,9 +71,8 @@ public class HomeActivity extends BaseAppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
+        // Get URI from intent
         wsUri = getIntent().getStringExtra("ws_uri");
-
-        Log.i(TAG, wsUri);
 
         // Create WSAPI
         wsApi = new WSAPI(wsUri, this);

@@ -68,6 +68,7 @@ public class LoginActivity extends BaseAppCompatActivity {
 
         wsUri = getIntent().getExtras().getString("ws_uri");
 
+        // Check if it was started to display a cred-related error, attempt login, return error.
         if (getIntent().getExtras() != null && getIntent().getExtras().getBoolean("startForLogin", false)) {
             try {
                 loginUser(getIntent().getExtras().getString("email"), getIntent().getExtras().getString("password"));
@@ -111,6 +112,10 @@ public class LoginActivity extends BaseAppCompatActivity {
         loginUser(etEmail.getText().toString(), etPassword.getText().toString());
     }
 
+    /**
+     * Move to {@link RegisterStepTwoActivity}
+     * @param view
+     */
     private void onClick_register(View view){
         Intent intent = new Intent(this, RegisterStepTwoActivity.class);
         intent.putExtra("userEmail", etEmail.getText().toString())
@@ -121,6 +126,11 @@ public class LoginActivity extends BaseAppCompatActivity {
     }
 
 
+    /**
+     * Perform the login itself with Firebase
+     * @param email
+     * @param password
+     */
     public void loginUser(String email, String password){
         resetError();
         if (email.isEmpty() || password.isEmpty()){
